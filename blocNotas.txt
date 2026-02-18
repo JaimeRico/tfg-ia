@@ -1,0 +1,2 @@
+https://www.kaggle.com/datasets/tobiasbueck/multilingual-customer-support-tickets/data
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIUu/OJGe8prFeZ99nwM7nUPe4Yv8dzByaeD4FCEL2x jimmyrrich@gmail.com

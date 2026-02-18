@@ -1,0 +1,13 @@
+# Entorno Python
+.venv/
+__pycache__/
+*.pyc
+
+# Variables sensibles
+.env
+
+# Datos grandes (no subir el CSV original)
+data/raw/*.csv
+
+# Logs
+*.log
