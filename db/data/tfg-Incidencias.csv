@@ -1,0 +1,4 @@
+ID,subject,body,priority,type,queue,language,status,ai_suggested
+1001,Servidor caído en producción,El servicio de AWS no responde desde las 14:00.,high,Incident,Technical Support,es,nuevo,false
+1002,Consulta sobre precio del Dell XPS,Me gustaría saber si el Dell XPS 13 está disponible.,low,Request,Sales and Pre-Sales,es,nuevo,false
+1003,Error en autocompletado de IntelliJ,El IDE se cuelga con el autocompletado desde 2024.1.,high,Incident,Technical Support,es,nuevo,false

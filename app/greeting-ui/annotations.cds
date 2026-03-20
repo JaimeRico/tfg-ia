@@ -1,39 +1,33 @@
-using GreetingService as service from '../../srv/service';
-annotate service.Greetings with @(
-    UI.FieldGroup #GeneratedGroup : {
+using IncidenciasService as service from '../../src/srv/service';
+
+annotate service.Incidencias with @(
+    UI.LineItem : [
+        { $Type: 'UI.DataField', Label: 'Asunto',    Value: subject   },
+        { $Type: 'UI.DataField', Label: 'Prioridad', Value: priority  },
+        { $Type: 'UI.DataField', Label: 'Tipo',      Value: type      },
+        { $Type: 'UI.DataField', Label: 'Cola',      Value: queue     },
+        { $Type: 'UI.DataField', Label: 'Estado',    Value: status    },
+        { $Type: 'UI.DataField', Label: 'Idioma',    Value: language  },
+    ],
+    UI.FieldGroup #Detalle : {
         $Type : 'UI.FieldGroupType',
-        Data : [
-            {
-                $Type : 'UI.DataField',
-                Label : 'ID',
-                Value : ID,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'message',
-                Value : message,
-            },
+        Data  : [
+            { $Type: 'UI.DataField', Label: 'Asunto',       Value: subject       },
+            { $Type: 'UI.DataField', Label: 'Descripción',  Value: body          },
+            { $Type: 'UI.DataField', Label: 'Prioridad',    Value: priority      },
+            { $Type: 'UI.DataField', Label: 'Tipo',         Value: type          },
+            { $Type: 'UI.DataField', Label: 'Cola',         Value: queue         },
+            { $Type: 'UI.DataField', Label: 'Estado',       Value: status        },
+            { $Type: 'UI.DataField', Label: 'Sugerido IA',  Value: ai_suggested  },
+            { $Type: 'UI.DataField', Label: 'Confianza IA', Value: ai_confidence },
         ],
     },
     UI.Facets : [
         {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'GeneratedFacet1',
-            Label : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup',
-        },
-    ],
-    UI.LineItem : [
-        {
-            $Type : 'UI.DataField',
-            Label : 'ID',
-            Value : ID,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'message',
-            Value : message,
+            $Type  : 'UI.ReferenceFacet',
+            ID     : 'Detalle',
+            Label  : 'Información de la incidencia',
+            Target : '@UI.FieldGroup#Detalle',
         },
     ],
 );
-
