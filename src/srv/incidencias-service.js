@@ -6,12 +6,11 @@ module.exports = class IncidenciasService extends cds.ApplicationService {
         this.before('CREATE', 'Incidencias', async (req) => {
             const { subject, body } = req.data
 
-            // Por ahora simulamos la IA con lógica simple
-            // En el siguiente paso esto será una llamada real a la API
+            // Por ahora simulamos la IA - siguiente paso llamada real a la API
             console.log('Nueva incidencia recibida:', subject)
             console.log('Llamando a la IA...')
 
-            const sugerencia = await this.sugerirConIA(subject, body)
+            const sugerencia = await this.suggestIA(subject, body)
 
             // Rellenamos los campos automáticamente
             req.data.priority     = sugerencia.priority
@@ -24,8 +23,8 @@ module.exports = class IncidenciasService extends cds.ApplicationService {
         await super.init()
     }
 
-    async sugerirConIA(subject, body) {
-        // TODO: aquí irá la llamada real a Claude API
+    async suggestIA(subject, body) {
+        // aquí irá la llamada real a Claude API
         // De momento devolvemos valores simulados para probar el flujo
         return {
             priority:   'medium',
