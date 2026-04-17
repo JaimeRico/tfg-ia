@@ -1,0 +1,9 @@
+### Crear incidencia nueva (la IA debería sugerir prioridad, tipo y cola)
+POST http://localhost:4004/odata/v4/incidencias/Incidencias
+Content-Type: application/json
+
+{
+    "subject": "El sistema de pagos no responde",
+        "body": "Desde las 10:00 los usuarios no pueden completar pagos. El error aparece en checkout.",
+            "language": "es"
+} 

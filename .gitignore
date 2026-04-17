@@ -11,3 +11,4 @@ data/raw/*.csv
 
 # Logs
 *.log
+node_modules

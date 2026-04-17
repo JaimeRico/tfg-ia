@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
     "@sap/cds": "^9",
     "express": "^4"
   },
