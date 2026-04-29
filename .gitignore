@@ -12,3 +12,6 @@ data/raw/*.csv
 # Logs
 *.log
 node_modules
+
+# added by cds
+.cdsrc-private.json

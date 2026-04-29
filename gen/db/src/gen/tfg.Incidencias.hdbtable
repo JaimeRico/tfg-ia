@@ -1,0 +1,21 @@
+COLUMN TABLE tfg_Incidencias (
+  ID NVARCHAR(36) NOT NULL,
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  subject NVARCHAR(500),
+  body NCLOB,
+  priority NVARCHAR(5000),
+  type NVARCHAR(5000),
+  queue NVARCHAR(5000),
+  department NVARCHAR(5000),
+  category NVARCHAR(5000),
+  "LANGUAGE" NVARCHAR(5),
+  status NVARCHAR(5000) DEFAULT 'nuevo',
+  ai_suggested BOOLEAN DEFAULT FALSE,
+  ai_reason NVARCHAR(1000),
+  ai_recommendation NVARCHAR(1500),
+  needs_review BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY(ID)
+)

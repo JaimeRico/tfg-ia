@@ -1,0 +1,41 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "TFG_INCIDENCIAS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "tfg-Incidencias.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ","
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "SUBJECT",
+          "BODY",
+          "PRIORITY",
+          "TYPE",
+          "QUEUE",
+          "LANGUAGE",
+          "STATUS",
+          "AI_SUGGESTED"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "SUBJECT": "subject",
+        "BODY": "body",
+        "PRIORITY": "priority",
+        "TYPE": "type",
+        "QUEUE": "queue",
+        "LANGUAGE": "language",
+        "STATUS": "status",
+        "AI_SUGGESTED": "ai_suggested"
+      }
+    }
+  ]
+}

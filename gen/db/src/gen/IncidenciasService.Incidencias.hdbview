@@ -1,0 +1,20 @@
+VIEW IncidenciasService_Incidencias AS SELECT
+  Incidencias_0.ID,
+  Incidencias_0.createdAt,
+  Incidencias_0.createdBy,
+  Incidencias_0.modifiedAt,
+  Incidencias_0.modifiedBy,
+  Incidencias_0.subject,
+  Incidencias_0.body,
+  Incidencias_0.priority,
+  Incidencias_0.type,
+  Incidencias_0.queue,
+  Incidencias_0.department,
+  Incidencias_0.category,
+  Incidencias_0."LANGUAGE",
+  Incidencias_0.status,
+  Incidencias_0.ai_suggested,
+  Incidencias_0.ai_reason,
+  Incidencias_0.ai_recommendation,
+  Incidencias_0.needs_review
+FROM tfg_Incidencias AS Incidencias_0

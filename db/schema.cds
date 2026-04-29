@@ -1,10 +1,5 @@
 namespace tfg;
-using {cuid, managed} from '@sap/cds/common';
-
-/*entity Greeting{
-    key ID : Integer;
-    message : String;
-}*/
+using { cuid, managed } from '@sap/cds/common';
 
 type Priority : String enum {
     high;
@@ -18,7 +13,6 @@ type TicketType : String enum {
     Change;
     Problem;
 }
-
 type Queue : String enum {
     TechnicalSupport    = 'Technical Support';
     CustomerService     = 'Customer Service';
@@ -31,15 +25,42 @@ type Queue : String enum {
     SalesAndPreSales    = 'Sales and Pre-Sales';
     HumanResources      = 'Human Resources';
 }
+type Department : String enum {
+    Payroll              = 'Payroll';
+    HumanResources       = 'Human Resources';
+    ITSupport            = 'IT Support';
+    Finance              = 'Finance';
+    Sales                = 'Sales';
+    CustomerCare         = 'Customer Care';
+    GeneralAdministration = 'General Administration';
+}
+
+type IncidentCategory : String enum {
+    Functional;
+    Technical;
+}
 
 entity Incidencias : cuid, managed {
-    subject      : String(500);
-    body         : LargeString;
-    priority     : Priority;
-    type         : TicketType;
-    queue        : Queue;
-    language     : String(5);
-    status       : String enum { nuevo; asignado; en_progreso; cerrado; } default 'nuevo';
-    ai_suggested : Boolean default false;
-    ai_confidence: Decimal(4,3);
+    subject            : String(500);
+    body               : LargeString;
+
+    priority           : Priority;
+    type               : TicketType;
+    queue              : Queue;
+    department         : Department;
+    category           : IncidentCategory;
+
+    language           : String(5);
+    status             : String enum {
+        nuevo;
+        respondido;
+        asignado;
+        en_progreso;
+        cerrado;
+    } default 'nuevo';
+
+    ai_suggested       : Boolean default false;
+    ai_reason          : String(1000);
+    ai_recommendation  : String(1500);
+    needs_review       : Boolean default false;
 }
