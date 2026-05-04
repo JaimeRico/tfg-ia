@@ -17,7 +17,7 @@ COLUMN TABLE tfg_Incidencias (
   ai_reason NVARCHAR(1000),
   ai_recommendation NVARCHAR(1500),
   needs_review BOOLEAN DEFAULT FALSE,
-  hr_response NVARCHAR(2000),
+  hr_response NCLOB,
   resolved_by NVARCHAR(255),
   resolved_at TIMESTAMP,
   PRIMARY KEY(ID)

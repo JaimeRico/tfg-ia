@@ -1,7 +1,53 @@
 {
   "xsappname": "tfg-ia-d1c6e5d6trial-dev",
   "tenant-mode": "dedicated",
-  "description": "Security profile of called application",
-  "scopes": [],
-  "role-templates": []
+  "description": "Security profile of TFG Incidencias con IA",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Empleado",
+      "description": "Puede crear incidencias"
+    },
+    {
+      "name": "$XSAPPNAME.RRHH",
+      "description": "Puede revisar y gestionar incidencias"
+    },
+    {
+      "name": "$XSAPPNAME.ITSupport",
+      "description": "Puede revisar incidencias técnicas"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Acceso completo"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Empleado",
+      "description": "Rol de empleado",
+      "scope-references": [
+        "$XSAPPNAME.Empleado"
+      ]
+    },
+    {
+      "name": "RRHH",
+      "description": "Rol de recursos humanos",
+      "scope-references": [
+        "$XSAPPNAME.RRHH"
+      ]
+    },
+    {
+      "name": "ITSupport",
+      "description": "Rol de soporte IT",
+      "scope-references": [
+        "$XSAPPNAME.ITSupport"
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Rol administrador",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    }
+  ]
 }

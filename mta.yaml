@@ -53,7 +53,16 @@ modules:
         - npm install
         - npm run build:cf
       supported-platforms: []
-
+  - name: greetingui
+    type: html5
+    path: app/greeting-ui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
 resources:
   - name: tfg-ia-db
     type: com.sap.xs.hdi-container

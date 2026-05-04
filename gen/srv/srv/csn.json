@@ -214,8 +214,7 @@
           }
         },
         "hr_response": {
-          "type": "cds.String",
-          "length": 2000
+          "type": "cds.LargeString"
         },
         "resolved_by": {
           "type": "cds.String",
@@ -281,13 +280,6 @@
           "Value": {
             "=": "type"
           }
-        }
-      ],
-      "@UI.Identification": [
-        {
-          "$Type": "UI.DataFieldForAction",
-          "Label": "Responder y cerrar",
-          "Action": "IncidenciasService.responderYcerrar"
         }
       ],
       "@UI.FieldGroup#Principal.$Type": "UI.FieldGroupType",
@@ -564,8 +556,7 @@
           }
         },
         "hr_response": {
-          "type": "cds.String",
-          "length": 2000
+          "type": "cds.LargeString"
         },
         "resolved_by": {
           "type": "cds.String",
@@ -574,18 +565,6 @@
         "resolved_at": {
           "type": "cds.Timestamp"
         }
-      }
-    },
-    "IncidenciasService.responderYcerrar": {
-      "kind": "action",
-      "params": {
-        "respuesta": {
-          "type": "cds.String",
-          "length": 2000
-        }
-      },
-      "returns": {
-        "type": "IncidenciasService.Incidencias"
       }
     },
     "cds.outbox.Messages": {

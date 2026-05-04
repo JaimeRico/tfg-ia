@@ -3,9 +3,37 @@ const incidenciasHandler = require('./handler/incidencias-service');
 
 module.exports = class IncidenciasService extends cds.ApplicationService {
     async init() {
-        this.before('CREATE', 'Incidencias', incidenciasHandler.sugerirConIA);
+
+        this.before('CREATE', 'Incidencias', async (req) => {
+            /*if (
+                !req.user.is('Empleado') &&
+                !req.user.is('RRHH') &&
+                !req.user.is('Admin')
+            ) {
+                return req.reject(403, 'No autorizado para crear incidencias');
+            }*/
+
+            return incidenciasHandler.sugerirConIA(req);
+        });
+
+        this.before('READ', 'Incidencias', async (req) => {
+           /* if (
+                !req.user.is('RRHH') &&
+                !req.user.is('ITSupport') &&
+                !req.user.is('Admin')
+            ) {
+                return req.reject(403, 'No autorizado para ver incidencias');
+            }*/
+        });
 
         this.on('responderYCerrar', 'Incidencias', async (req) => {
+            /*if (
+                !req.user.is('RRHH') &&
+                !req.user.is('Admin')
+            ) {
+                return req.reject(403, 'No autorizado para responder y cerrar incidencias');
+            }*/
+
             const id = req.params[0].ID;
             const { respuesta } = req.data;
 

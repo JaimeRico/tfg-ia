@@ -24,7 +24,6 @@
       </Annotation>
       <EntityContainer Name="EntityContainer">
         <EntitySet Name="Incidencias" EntityType="IncidenciasService.Incidencias"/>
-        <ActionImport Name="responderYcerrar" Action="IncidenciasService.responderYcerrar" EntitySet="Incidencias"/>
       </EntityContainer>
       <EntityType Name="Incidencias">
         <Key>
@@ -48,14 +47,10 @@
         <Property Name="ai_reason" Type="Edm.String" MaxLength="1000"/>
         <Property Name="ai_recommendation" Type="Edm.String" MaxLength="1500"/>
         <Property Name="needs_review" Type="Edm.Boolean" DefaultValue="false"/>
-        <Property Name="hr_response" Type="Edm.String" MaxLength="2000"/>
+        <Property Name="hr_response" Type="Edm.String"/>
         <Property Name="resolved_by" Type="Edm.String" MaxLength="255"/>
         <Property Name="resolved_at" Type="Edm.DateTimeOffset" Precision="7"/>
       </EntityType>
-      <Action Name="responderYcerrar" IsBound="false">
-        <Parameter Name="respuesta" Type="Edm.String" MaxLength="2000"/>
-        <ReturnType Type="IncidenciasService.Incidencias"/>
-      </Action>
       <Annotations Target="IncidenciasService.Incidencias">
         <Annotation Term="UI.LineItem">
           <Collection>
@@ -86,14 +81,6 @@
             <Record Type="UI.DataField">
               <PropertyValue Property="Label" String="Tipo"/>
               <PropertyValue Property="Value" Path="type"/>
-            </Record>
-          </Collection>
-        </Annotation>
-        <Annotation Term="UI.Identification">
-          <Collection>
-            <Record Type="UI.DataFieldForAction">
-              <PropertyValue Property="Label" String="Responder y cerrar"/>
-              <PropertyValue Property="Action" String="IncidenciasService.responderYcerrar"/>
             </Record>
           </Collection>
         </Annotation>

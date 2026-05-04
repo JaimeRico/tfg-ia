@@ -2,7 +2,7 @@
 
 specVersion: "4.0"
 metadata:
-  name: greetingui
+  name: greetinui
 type: application
 server:
   customMiddleware:
