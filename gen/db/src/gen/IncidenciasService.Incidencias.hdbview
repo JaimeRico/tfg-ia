@@ -16,5 +16,8 @@ VIEW IncidenciasService_Incidencias AS SELECT
   Incidencias_0.ai_suggested,
   Incidencias_0.ai_reason,
   Incidencias_0.ai_recommendation,
-  Incidencias_0.needs_review
+  Incidencias_0.needs_review,
+  Incidencias_0.hr_response,
+  Incidencias_0.resolved_by,
+  Incidencias_0.resolved_at
 FROM tfg_Incidencias AS Incidencias_0

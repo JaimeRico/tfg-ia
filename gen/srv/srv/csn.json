@@ -212,6 +212,17 @@
           "default": {
             "val": false
           }
+        },
+        "hr_response": {
+          "type": "cds.String",
+          "length": 2000
+        },
+        "resolved_by": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "resolved_at": {
+          "type": "cds.Timestamp"
         }
       }
     },
@@ -238,16 +249,16 @@
         },
         {
           "$Type": "UI.DataField",
-          "Label": "Tipo",
+          "Label": "Categoría",
           "Value": {
-            "=": "type"
+            "=": "category"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "Cola",
+          "Label": "Departamento",
           "Value": {
-            "=": "queue"
+            "=": "department"
           }
         },
         {
@@ -259,14 +270,28 @@
         },
         {
           "$Type": "UI.DataField",
-          "Label": "Idioma",
+          "Label": "Revisión necesaria",
           "Value": {
-            "=": "language"
+            "=": "needs_review"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Tipo",
+          "Value": {
+            "=": "type"
           }
         }
       ],
-      "@UI.FieldGroup#Detalle.$Type": "UI.FieldGroupType",
-      "@UI.FieldGroup#Detalle.Data": [
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "Responder y cerrar",
+          "Action": "IncidenciasService.responderYcerrar"
+        }
+      ],
+      "@UI.FieldGroup#Principal.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Principal.Data": [
         {
           "$Type": "UI.DataField",
           "Label": "Asunto",
@@ -294,7 +319,10 @@
           "Value": {
             "=": "type"
           }
-        },
+        }
+      ],
+      "@UI.FieldGroup#ClasificacionIA.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#ClasificacionIA.Data": [
         {
           "$Type": "UI.DataField",
           "Label": "Cola",
@@ -304,6 +332,51 @@
         },
         {
           "$Type": "UI.DataField",
+          "Label": "Departamento",
+          "Value": {
+            "=": "department"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Categoría",
+          "Value": {
+            "=": "category"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Revisión necesaria",
+          "Value": {
+            "=": "needs_review"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Clasificado por IA",
+          "Value": {
+            "=": "ai_suggested"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Justificación IA",
+          "Value": {
+            "=": "ai_reason"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Recomendación IA",
+          "Value": {
+            "=": "ai_recommendation"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Seguimiento.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Seguimiento.Data": [
+        {
+          "$Type": "UI.DataField",
           "Label": "Estado",
           "Value": {
             "=": "status"
@@ -311,25 +384,60 @@
         },
         {
           "$Type": "UI.DataField",
-          "Label": "Sugerido IA",
+          "Label": "Creado el",
           "Value": {
-            "=": "ai_suggested"
+            "=": "createdAt"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Resolucion.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Resolucion.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Respuesta de RRHH",
+          "Value": {
+            "=": "hr_response"
           }
         },
         {
           "$Type": "UI.DataField",
-          "Label": "Confianza IA",
+          "Label": "Resuelto por",
           "Value": {
-            "=": "ai_confidence"
+            "=": "resolved_by"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Resuelto el",
+          "Value": {
+            "=": "resolved_at"
           }
         }
       ],
       "@UI.Facets": [
         {
           "$Type": "UI.ReferenceFacet",
-          "ID": "Detalle",
-          "Label": "Información de la incidencia",
-          "Target": "@UI.FieldGroup#Detalle"
+          "ID": "Principal",
+          "Label": "Información general",
+          "Target": "@UI.FieldGroup#Principal"
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "ID": "ClasificacionIA",
+          "Label": "Clasificación y apoyo de IA",
+          "Target": "@UI.FieldGroup#ClasificacionIA"
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "ID": "Seguimiento",
+          "Label": "Seguimiento",
+          "Target": "@UI.FieldGroup#Seguimiento"
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "ID": "Resolucion",
+          "Label": "Resolución",
+          "Target": "@UI.FieldGroup#Resolucion"
         }
       ],
       "projection": {
@@ -454,7 +562,30 @@
           "default": {
             "val": false
           }
+        },
+        "hr_response": {
+          "type": "cds.String",
+          "length": 2000
+        },
+        "resolved_by": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "resolved_at": {
+          "type": "cds.Timestamp"
         }
+      }
+    },
+    "IncidenciasService.responderYcerrar": {
+      "kind": "action",
+      "params": {
+        "respuesta": {
+          "type": "cds.String",
+          "length": 2000
+        }
+      },
+      "returns": {
+        "type": "IncidenciasService.Incidencias"
       }
     },
     "cds.outbox.Messages": {

@@ -63,4 +63,8 @@ entity Incidencias : cuid, managed {
     ai_reason          : String(1000);
     ai_recommendation  : String(1500);
     needs_review       : Boolean default false;
+
+    hr_response        : LargeString;
+    resolved_by        : String(255);
+    resolved_at        : Timestamp;
 }

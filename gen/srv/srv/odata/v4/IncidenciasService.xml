@@ -24,6 +24,7 @@
       </Annotation>
       <EntityContainer Name="EntityContainer">
         <EntitySet Name="Incidencias" EntityType="IncidenciasService.Incidencias"/>
+        <ActionImport Name="responderYcerrar" Action="IncidenciasService.responderYcerrar" EntitySet="Incidencias"/>
       </EntityContainer>
       <EntityType Name="Incidencias">
         <Key>
@@ -47,7 +48,14 @@
         <Property Name="ai_reason" Type="Edm.String" MaxLength="1000"/>
         <Property Name="ai_recommendation" Type="Edm.String" MaxLength="1500"/>
         <Property Name="needs_review" Type="Edm.Boolean" DefaultValue="false"/>
+        <Property Name="hr_response" Type="Edm.String" MaxLength="2000"/>
+        <Property Name="resolved_by" Type="Edm.String" MaxLength="255"/>
+        <Property Name="resolved_at" Type="Edm.DateTimeOffset" Precision="7"/>
       </EntityType>
+      <Action Name="responderYcerrar" IsBound="false">
+        <Parameter Name="respuesta" Type="Edm.String" MaxLength="2000"/>
+        <ReturnType Type="IncidenciasService.Incidencias"/>
+      </Action>
       <Annotations Target="IncidenciasService.Incidencias">
         <Annotation Term="UI.LineItem">
           <Collection>
@@ -60,24 +68,36 @@
               <PropertyValue Property="Value" Path="priority"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Label" String="Tipo"/>
-              <PropertyValue Property="Value" Path="type"/>
+              <PropertyValue Property="Label" String="Categoría"/>
+              <PropertyValue Property="Value" Path="category"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Label" String="Cola"/>
-              <PropertyValue Property="Value" Path="queue"/>
+              <PropertyValue Property="Label" String="Departamento"/>
+              <PropertyValue Property="Value" Path="department"/>
             </Record>
             <Record Type="UI.DataField">
               <PropertyValue Property="Label" String="Estado"/>
               <PropertyValue Property="Value" Path="status"/>
             </Record>
             <Record Type="UI.DataField">
-              <PropertyValue Property="Label" String="Idioma"/>
-              <PropertyValue Property="Value" Path="language"/>
+              <PropertyValue Property="Label" String="Revisión necesaria"/>
+              <PropertyValue Property="Value" Path="needs_review"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Tipo"/>
+              <PropertyValue Property="Value" Path="type"/>
             </Record>
           </Collection>
         </Annotation>
-        <Annotation Term="UI.FieldGroup" Qualifier="Detalle">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Responder y cerrar"/>
+              <PropertyValue Property="Action" String="IncidenciasService.responderYcerrar"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Principal">
           <Record Type="UI.FieldGroupType">
             <PropertyValue Property="Data">
               <Collection>
@@ -97,21 +117,77 @@
                   <PropertyValue Property="Label" String="Tipo"/>
                   <PropertyValue Property="Value" Path="type"/>
                 </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="ClasificacionIA">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
                 <Record Type="UI.DataField">
                   <PropertyValue Property="Label" String="Cola"/>
                   <PropertyValue Property="Value" Path="queue"/>
                 </Record>
                 <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Departamento"/>
+                  <PropertyValue Property="Value" Path="department"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Categoría"/>
+                  <PropertyValue Property="Value" Path="category"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Revisión necesaria"/>
+                  <PropertyValue Property="Value" Path="needs_review"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Clasificado por IA"/>
+                  <PropertyValue Property="Value" Path="ai_suggested"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Justificación IA"/>
+                  <PropertyValue Property="Value" Path="ai_reason"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Recomendación IA"/>
+                  <PropertyValue Property="Value" Path="ai_recommendation"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Seguimiento">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
                   <PropertyValue Property="Label" String="Estado"/>
                   <PropertyValue Property="Value" Path="status"/>
                 </Record>
                 <Record Type="UI.DataField">
-                  <PropertyValue Property="Label" String="Sugerido IA"/>
-                  <PropertyValue Property="Value" Path="ai_suggested"/>
+                  <PropertyValue Property="Label" String="Creado el"/>
+                  <PropertyValue Property="Value" Path="createdAt"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Resolucion">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Respuesta de RRHH"/>
+                  <PropertyValue Property="Value" Path="hr_response"/>
                 </Record>
                 <Record Type="UI.DataField">
-                  <PropertyValue Property="Label" String="Confianza IA"/>
-                  <PropertyValue Property="Value" Path="ai_confidence"/>
+                  <PropertyValue Property="Label" String="Resuelto por"/>
+                  <PropertyValue Property="Value" Path="resolved_by"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Resuelto el"/>
+                  <PropertyValue Property="Value" Path="resolved_at"/>
                 </Record>
               </Collection>
             </PropertyValue>
@@ -120,9 +196,24 @@
         <Annotation Term="UI.Facets">
           <Collection>
             <Record Type="UI.ReferenceFacet">
-              <PropertyValue Property="ID" String="Detalle"/>
-              <PropertyValue Property="Label" String="Información de la incidencia"/>
-              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Detalle"/>
+              <PropertyValue Property="ID" String="Principal"/>
+              <PropertyValue Property="Label" String="Información general"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Principal"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="ClasificacionIA"/>
+              <PropertyValue Property="Label" String="Clasificación y apoyo de IA"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ClasificacionIA"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="Seguimiento"/>
+              <PropertyValue Property="Label" String="Seguimiento"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Seguimiento"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="ID" String="Resolucion"/>
+              <PropertyValue Property="Label" String="Resolución"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Resolucion"/>
             </Record>
           </Collection>
         </Annotation>

@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog
+        id="responderCerrarDialog"
+        title="Responder y cerrar incidencia"
+        contentWidth="40rem"
+        contentHeight="20rem"
+        draggable="true"
+        resizable="true">
+
+        <content>
+            <VBox id="responderCerrarVBox" class="sapUiSmallMargin">
+                <Text
+                    id="respuestaRRHHLabel"
+                    text="Respuesta para el empleado"
+                    class="sapUiSmallMarginBottom" />
+
+                <TextArea
+                    id="respuestaRRHHTextArea"
+                    width="100%"
+                    rows="10"
+                    growing="true"
+                    growingMaxLines="15"
+                    placeholder="Escriba aquí la respuesta de RRHH..." />
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button
+                id="confirmarResponderCerrarButton"
+                text="Responder y cerrar"
+                type="Emphasized"
+                press="onConfirmarResponderYCerrar" />
+        </beginButton>
+
+        <endButton>
+            <Button
+                id="cancelarResponderCerrarButton"
+                text="Cancelar"
+                press="onCancelarResponderYCerrar" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
