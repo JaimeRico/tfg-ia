@@ -4,59 +4,68 @@ module.exports = class DashboardService extends cds.ApplicationService {
   async init() {
 
     this.on('READ', 'DashboardKPIs', async () => {
-      const Incidencias = 'IncidenciasService.Incidencias';
-      const totalRow       = await SELECT.one.from(Incidencias).columns`count(*) as total`;
-      const abiertasRow    = await SELECT.one.from(Incidencias).columns`count(*) as total`
-        .where({ status: { 'in': ['nuevo', 'asignado', 'en_progreso', 'respondido'] } });
-      const cerradasRow    = await SELECT.one.from(Incidencias).columns`count(*) as total`
-        .where({ status: 'cerrado' });
-      const needsReviewRow = await SELECT.one.from(Incidencias).columns`count(*) as total`
-        .where({ needs_review: true });
+      const db = await cds.connect.to('db');
+      const { Incidencias } = db.entities('tfg');
 
-      return [{
-        ID:          'kpi-1',
-        total:       parseInt(totalRow?.total)       || 0,
-        abiertas:    parseInt(abiertasRow?.total)    || 0,
-        cerradas:    parseInt(cerradasRow?.total)    || 0,
-        needsReview: parseInt(needsReviewRow?.total) || 0
-      }];
+      const all    = await db.run(SELECT.from(Incidencias));
+      const total  = all.length;
+      const abiertas = all.filter(i => ['nuevo','asignado','en_progreso','respondido'].includes(i.status)).length;
+      const cerradas = all.filter(i => i.status === 'cerrado').length;
+      const needsReview = all.filter(i => i.needs_review === true).length;
+
+      return [{ ID: 'kpi-1', total, abiertas, cerradas, needsReview }];
     });
 
     this.on('READ', 'DashboardPorDepartamento', async () => {
-      const rows = await cds.run(`
-        SELECT COALESCE(department, 'Sin departamento') as dimension, COUNT(*) as total
-        FROM IncidenciasService_Incidencias
-        GROUP BY department ORDER BY total DESC
-      `);
-      return rows.map(r => ({ dimension: r.dimension, total: parseInt(r.total) || 0 }));
+      const db = await cds.connect.to('db');
+      const { Incidencias } = db.entities('tfg');
+      const all = await db.run(SELECT.from(Incidencias).columns('department'));
+      const map = {};
+      all.forEach(i => {
+        const key = i.department || 'Sin departamento';
+        map[key] = (map[key] || 0) + 1;
+      });
+      return Object.entries(map).map(([dimension, total]) => ({ dimension, total }));
     });
 
     this.on('READ', 'DashboardPorCategoria', async () => {
-      const rows = await cds.run(`
-        SELECT COALESCE(category, 'Sin categoría') as dimension, COUNT(*) as total
-        FROM IncidenciasService_Incidencias
-        GROUP BY category ORDER BY total DESC
-      `);
-      return rows.map(r => ({ dimension: r.dimension, total: parseInt(r.total) || 0 }));
+      const db = await cds.connect.to('db');
+      const { Incidencias } = db.entities('tfg');
+      const all = await db.run(SELECT.from(Incidencias).columns('category'));
+      const map = {};
+      all.forEach(i => {
+        const key = i.category || 'Sin categoría';
+        map[key] = (map[key] || 0) + 1;
+      });
+      return Object.entries(map).map(([dimension, total]) => ({ dimension, total }));
     });
 
     this.on('READ', 'DashboardPorEstado', async () => {
-      const rows = await cds.run(`
-        SELECT COALESCE(status, 'Sin estado') as dimension, COUNT(*) as total
-        FROM IncidenciasService_Incidencias
-        GROUP BY status ORDER BY total DESC
-      `);
-      return rows.map(r => ({ dimension: r.dimension, total: parseInt(r.total) || 0 }));
+      const db = await cds.connect.to('db');
+      const { Incidencias } = db.entities('tfg');
+      const all = await db.run(SELECT.from(Incidencias).columns('status'));
+      const map = {};
+      all.forEach(i => {
+        const key = i.status || 'Sin estado';
+        map[key] = (map[key] || 0) + 1;
+      });
+      return Object.entries(map).map(([dimension, total]) => ({ dimension, total }));
     });
 
     this.on('READ', 'DashboardPorMes', async () => {
-      const rows = await cds.run(`
-        SELECT SUBSTRING(TO_CHAR(createdAt, 'YYYY-MM'), 1, 7) as dimension, COUNT(*) as total
-        FROM IncidenciasService_Incidencias
-        GROUP BY SUBSTRING(TO_CHAR(createdAt, 'YYYY-MM'), 1, 7)
-        ORDER BY dimension
-      `);
-      return rows.map(r => ({ dimension: r.dimension, total: parseInt(r.total) || 0 }));
+      const db = await cds.connect.to('db');
+      const { Incidencias } = db.entities('tfg');
+      const all = await db.run(SELECT.from(Incidencias).columns('createdAt'));
+      const map = {};
+      all.forEach(i => {
+        if (i.createdAt) {
+          const key = i.createdAt.substring(0, 7);
+          map[key] = (map[key] || 0) + 1;
+        }
+      });
+      return Object.entries(map)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([dimension, total]) => ({ dimension, total }));
     });
 
     await super.init();
