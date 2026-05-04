@@ -1,0 +1,69 @@
+{
+  "_version": "1.84.0",
+  "sap.app": {
+    "id": "dashboard",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": { "version": "0.0.1" },
+    "title": "Dashboard Incidencias",
+    "description": "Dashboard de incidencias",
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/dashboard/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.147.2",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.viz": {},
+        "sap.ui.layout": {}
+      }
+    },
+    "contentDensities": { "compact": true, "cozy": true },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "dashboard.i18n.i18n" }
+      },
+      "mainModel": {
+        "dataSource": "mainService",
+        "preload": true,
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": false,
+          "earlyRequests": false
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "dashboard.view",
+        "controlId": "app",
+        "controlAggregation": "pages"
+      },
+      "routes": [
+        { "pattern": "", "name": "main", "target": "main" }
+      ],
+      "targets": {
+        "main": { "viewName": "Main" }
+      }
+    }
+  }
+}

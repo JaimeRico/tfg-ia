@@ -23,13 +23,30 @@
     "watch-createincidence": "cds watch --open tfgia.createincidence/index.html?sap-ui-xx-viewCache=false --livereload false",
     "undeploy": "cf undeploy tfg-ia --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-dashboard": "cds watch --open dashboard/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/greeting-ui"
-  ]
+    "app/greeting-ui",
+    "app/dashboard"
+  ],
+  "cds": {
+  "requires": {
+    "db": {
+      "kind": "hana"
+    }
+  },
+  "services": {
+    "DashboardService": {
+      "impl": "srv/dashboard-service.js"
+    },
+    "IncidenciasService": {
+      "impl": "srv/service.js"
+    }
+  }
+}
 }

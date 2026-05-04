@@ -1,0 +1,133 @@
+<mvc:View
+    controllerName="dashboard.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+
+    <Page title="Dashboard de Incidencias" backgroundDesign="List">
+        <content>
+            <VBox class="sapUiSmallMargin">
+
+                <!-- KPI TILES -->
+                <Title text="Resumen General" level="H2" class="sapUiSmallMarginBottom sapUiSmallMarginTop"/>
+                <l:Grid defaultSpan="XL3 L3 M6 S12" class="sapUiMediumMarginBottom">
+                    <l:content>
+                        <GenericTile header="Total" subheader="Incidencias registradas">
+                            <tileContent>
+                                <TileContent unit="incidencias">
+                                    <content>
+                                        <NumericContent value="{mainModel>/kpis/total}" icon="sap-icon://list" valueColor="Neutral"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+                        <GenericTile header="Abiertas" subheader="En curso">
+                            <tileContent>
+                                <TileContent unit="incidencias">
+                                    <content>
+                                        <NumericContent value="{mainModel>/kpis/abiertas}" icon="sap-icon://alert" valueColor="Critical"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+                        <GenericTile header="Cerradas" subheader="Resueltas">
+                            <tileContent>
+                                <TileContent unit="incidencias">
+                                    <content>
+                                        <NumericContent value="{mainModel>/kpis/cerradas}" icon="sap-icon://accept" valueColor="Good"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+                        <GenericTile header="Revisión" subheader="Necesitan revisión">
+                            <tileContent>
+                                <TileContent unit="incidencias">
+                                    <content>
+                                        <NumericContent value="{mainModel>/kpis/needsReview}" icon="sap-icon://flag" valueColor="Error"/>
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
+                    </l:content>
+                </l:Grid>
+
+                <!-- TABLES -->
+                <l:Grid defaultSpan="XL6 L6 M12 S12">
+                    <l:content>
+
+                        <Panel headerText="Por Departamento" expandable="false" class="sapUiSmallMarginBottom">
+                            <Table items="{mainModel>/departamento}">
+                                <columns>
+                                    <Column><Text text="Departamento"/></Column>
+                                    <Column hAlign="End"><Text text="Total"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{mainModel>dimension}"/>
+                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </Panel>
+
+                        <Panel headerText="Por Categoría" expandable="false" class="sapUiSmallMarginBottom">
+                            <Table items="{mainModel>/categoria}">
+                                <columns>
+                                    <Column><Text text="Categoría"/></Column>
+                                    <Column hAlign="End"><Text text="Total"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{mainModel>dimension}"/>
+                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </Panel>
+
+                        <Panel headerText="Por Estado" expandable="false" class="sapUiSmallMarginBottom">
+                            <Table items="{mainModel>/estado}">
+                                <columns>
+                                    <Column><Text text="Estado"/></Column>
+                                    <Column hAlign="End"><Text text="Total"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{mainModel>dimension}"/>
+                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </Panel>
+
+                        <Panel headerText="Por Mes" expandable="false" class="sapUiSmallMarginBottom">
+                            <Table items="{mainModel>/mes}">
+                                <columns>
+                                    <Column><Text text="Mes"/></Column>
+                                    <Column hAlign="End"><Text text="Total"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{mainModel>dimension}"/>
+                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </Panel>
+
+                    </l:content>
+                </l:Grid>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

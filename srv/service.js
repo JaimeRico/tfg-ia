@@ -62,6 +62,7 @@ module.exports = class IncidenciasService extends cds.ApplicationService {
                 .from('IncidenciasService.Incidencias')
                 .where({ ID: id });
         });
+   
 
         await super.init();
     }
