@@ -3,6 +3,9 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:l="sap.ui.layout"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:vizData="sap.viz.ui5.data"
+    xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
     displayBlock="true">
 
     <Page title="Dashboard de Incidencias" backgroundDesign="List">
@@ -52,76 +55,89 @@
                     </l:content>
                 </l:Grid>
 
-                <!-- TABLES -->
-                <l:Grid defaultSpan="XL6 L6 M12 S12">
+                <!-- CHARTS -->
+                <Title text="Distribución" level="H2" class="sapUiSmallMarginBottom"/>
+                <l:Grid defaultSpan="XL6 L6 M12 S12" class="sapUiMediumMarginBottom">
                     <l:content>
 
                         <Panel headerText="Por Departamento" expandable="false" class="sapUiSmallMarginBottom">
-                            <Table items="{mainModel>/departamento}">
-                                <columns>
-                                    <Column><Text text="Departamento"/></Column>
-                                    <Column hAlign="End"><Text text="Total"/></Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem>
-                                        <cells>
-                                            <Text text="{mainModel>dimension}"/>
-                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
+                            <viz:VizFrame id="chartDep" vizType="donut" height="300px" width="100%"
+                                uiConfig="{applicationSet:'fiori'}">
+                                <viz:dataset>
+                                    <vizData:FlattenedDataset data="{mainModel>/departamento}">
+                                        <vizData:dimensions>
+                                            <vizData:DimensionDefinition name="Departamento" value="{dimension}"/>
+                                        </vizData:dimensions>
+                                        <vizData:measures>
+                                            <vizData:MeasureDefinition name="Total" value="{total}"/>
+                                        </vizData:measures>
+                                    </vizData:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <vizFeeds:FeedItem uid="color" type="Dimension" values="Departamento"/>
+                                    <vizFeeds:FeedItem uid="size" type="Measure" values="Total"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
                         </Panel>
 
                         <Panel headerText="Por Categoría" expandable="false" class="sapUiSmallMarginBottom">
-                            <Table items="{mainModel>/categoria}">
-                                <columns>
-                                    <Column><Text text="Categoría"/></Column>
-                                    <Column hAlign="End"><Text text="Total"/></Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem>
-                                        <cells>
-                                            <Text text="{mainModel>dimension}"/>
-                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
+                            <viz:VizFrame id="chartCat" vizType="donut" height="300px" width="100%"
+                                uiConfig="{applicationSet:'fiori'}">
+                                <viz:dataset>
+                                    <vizData:FlattenedDataset data="{mainModel>/categoria}">
+                                        <vizData:dimensions>
+                                            <vizData:DimensionDefinition name="Categoría" value="{dimension}"/>
+                                        </vizData:dimensions>
+                                        <vizData:measures>
+                                            <vizData:MeasureDefinition name="Total" value="{total}"/>
+                                        </vizData:measures>
+                                    </vizData:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <vizFeeds:FeedItem uid="color" type="Dimension" values="Categoría"/>
+                                    <vizFeeds:FeedItem uid="size" type="Measure" values="Total"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
                         </Panel>
 
                         <Panel headerText="Por Estado" expandable="false" class="sapUiSmallMarginBottom">
-                            <Table items="{mainModel>/estado}">
-                                <columns>
-                                    <Column><Text text="Estado"/></Column>
-                                    <Column hAlign="End"><Text text="Total"/></Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem>
-                                        <cells>
-                                            <Text text="{mainModel>dimension}"/>
-                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
+                            <viz:VizFrame id="chartEst" vizType="donut" height="300px" width="100%"
+                                uiConfig="{applicationSet:'fiori'}">
+                                <viz:dataset>
+                                    <vizData:FlattenedDataset data="{mainModel>/estado}">
+                                        <vizData:dimensions>
+                                            <vizData:DimensionDefinition name="Estado" value="{dimension}"/>
+                                        </vizData:dimensions>
+                                        <vizData:measures>
+                                            <vizData:MeasureDefinition name="Total" value="{total}"/>
+                                        </vizData:measures>
+                                    </vizData:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <vizFeeds:FeedItem uid="color" type="Dimension" values="Estado"/>
+                                    <vizFeeds:FeedItem uid="size" type="Measure" values="Total"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
                         </Panel>
 
                         <Panel headerText="Por Mes" expandable="false" class="sapUiSmallMarginBottom">
-                            <Table items="{mainModel>/mes}">
-                                <columns>
-                                    <Column><Text text="Mes"/></Column>
-                                    <Column hAlign="End"><Text text="Total"/></Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem>
-                                        <cells>
-                                            <Text text="{mainModel>dimension}"/>
-                                            <ObjectNumber number="{mainModel>total}" emphasized="false"/>
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>
+                            <viz:VizFrame id="chartMes" vizType="line" height="300px" width="100%"
+                                uiConfig="{applicationSet:'fiori'}">
+                                <viz:dataset>
+                                    <vizData:FlattenedDataset data="{mainModel>/mes}">
+                                        <vizData:dimensions>
+                                            <vizData:DimensionDefinition name="Mes" value="{dimension}"/>
+                                        </vizData:dimensions>
+                                        <vizData:measures>
+                                            <vizData:MeasureDefinition name="Total" value="{total}"/>
+                                        </vizData:measures>
+                                    </vizData:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <vizFeeds:FeedItem uid="categoryAxis" type="Dimension" values="Mes"/>
+                                    <vizFeeds:FeedItem uid="valueAxis" type="Measure" values="Total"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
                         </Panel>
 
                     </l:content>
