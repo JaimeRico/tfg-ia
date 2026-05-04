@@ -12,7 +12,6 @@
   "devDependencies": {
     "@cap-js/sqlite": "^2",
     "@sap/cds-dk": "^9",
-    "cds-plugin-ui5": "^0.13.0",
     "mbt": "^1.2.29",
     "rimraf": "^5.0.5"
   },
@@ -25,10 +24,10 @@
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "private": true,
-  "workspaces": [
-    "app/*"
-  ],
   "sapux": [
     "app/greeting-ui"
-  ]
+  ],
+  "engines": {
+    "node": ">=20"
+  }
 }

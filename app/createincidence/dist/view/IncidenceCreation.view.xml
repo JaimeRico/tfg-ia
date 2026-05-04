@@ -1,0 +1,35 @@
+<mvc:View
+    controllerName="tfgia.createincidence.controller.IncidenceCreation"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="page" title="Crear incidencia">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Label text="Asunto" />
+                <Input id="subjectInput" placeholder="Introduce el asunto" />
+
+                <Label text="Descripción" class="sapUiSmallMarginTop" />
+                <TextArea
+                    id="bodyInput"
+                    rows="6"
+                    placeholder="Describe la incidencia" />
+
+                <Label text="Idioma" class="sapUiSmallMarginTop" />
+                <Input id="languageInput" value="es" />
+
+                <HBox class="sapUiSmallMarginTop" renderType="Bare">
+                    <Button
+                        text="Crear incidencia"
+                        type="Emphasized"
+                        press=".onCreateIncident" />
+
+                    <Button
+                        text="Ir a RRHH"
+                        class="sapUiTinyMarginBegin"
+                        press=".onGoToRRHH" />
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

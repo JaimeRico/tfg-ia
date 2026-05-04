@@ -1,5 +1,5 @@
 {
-  "xsappname": "tfg-ia",
+  "xsappname": "tfg-ia-d1c6e5d6trial-dev",
   "tenant-mode": "dedicated",
   "description": "Security profile of called application",
   "scopes": [],
