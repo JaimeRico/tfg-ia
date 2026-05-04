@@ -115,7 +115,13 @@
                   "tableSettings": {
                     "type": "ResponsiveTable"
                   }
+                },
+              "actions": {
+                "OpenCreateView": {
+                  "text": "Crear incidencia",
+                  "press": "greetingui.ext.ListReportExt.onOpenCreateView"
                 }
+              }
               }
             }
           }

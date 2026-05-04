@@ -1,0 +1,1 @@
+using IncidenciasService as service from '../../srv/service';
