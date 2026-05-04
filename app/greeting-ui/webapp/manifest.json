@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/greeting/",
+        "uri": "/odata/v4/incidencias/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -85,28 +85,28 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "GreetingsList",
-          "target": "GreetingsList"
+          "name": "IncidenciasList",
+          "target": "IncidenciasList"
         },
         {
-          "pattern": "Greetings({key}):?query:",
-          "name": "GreetingsObjectPage",
-          "target": "GreetingsObjectPage"
+          "pattern": "Incidencias({key}):?query:",
+          "name": "IncidenciasObjectPage",
+          "target": "IncidenciasObjectPage"
         }
       ],
       "targets": {
-        "GreetingsList": {
+        "IncidenciasList": {
           "type": "Component",
-          "id": "GreetingsList",
+          "id": "IncidenciasList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/Greetings",
+              "contextPath": "/Incidencias",
               "variantManagement": "Page",
               "navigation": {
-                "Greetings": {
+                "Incidencias": {
                   "detail": {
-                    "route": "GreetingsObjectPage"
+                    "route": "IncidenciasObjectPage"
                   }
                 }
               },
@@ -120,14 +120,14 @@
             }
           }
         },
-        "GreetingsObjectPage": {
+        "IncidenciasObjectPage": {
           "type": "Component",
-          "id": "GreetingsObjectPage",
+          "id": "IncidenciasObjectPage",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Greetings"
+              "contextPath": "/Incidencias"
             }
           }
         }

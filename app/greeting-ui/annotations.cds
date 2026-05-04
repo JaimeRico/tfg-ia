@@ -1,4 +1,4 @@
-using IncidenciasService as service from '../../src/srv/service';
+using IncidenciasService as service from '../../srv/service';
 
 annotate service.Incidencias with @(
     UI.LineItem : [
