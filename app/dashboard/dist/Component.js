@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/UIComponent","sap/m/App"],function(t,n){"use strict";return t.extend("dashboard.Component",{metadata:{manifest:"json"},init:function(){t.prototype.init.apply(this,arguments);this.getRouter().initialize()},createContent:function(){return new n({id:"app"})}})});
+//# sourceMappingURL=Component.js.map

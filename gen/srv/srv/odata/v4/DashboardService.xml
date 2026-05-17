@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="DashboardService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotation Term="Core.Links">
+        <Collection>
+          <Record>
+            <PropertyValue Property="rel" String="author"/>
+            <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+          </Record>
+        </Collection>
+      </Annotation>
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="DashboardKPIs" EntityType="DashboardService.DashboardKPIs"/>
+        <EntitySet Name="DashboardPorDepartamento" EntityType="DashboardService.DashboardPorDepartamento"/>
+        <EntitySet Name="DashboardPorCategoria" EntityType="DashboardService.DashboardPorCategoria"/>
+        <EntitySet Name="DashboardPorEstado" EntityType="DashboardService.DashboardPorEstado"/>
+        <EntitySet Name="DashboardPorMes" EntityType="DashboardService.DashboardPorMes"/>
+      </EntityContainer>
+      <EntityType Name="DashboardKPIs">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.String" Nullable="false"/>
+        <Property Name="total" Type="Edm.Int32"/>
+        <Property Name="abiertas" Type="Edm.Int32"/>
+        <Property Name="cerradas" Type="Edm.Int32"/>
+        <Property Name="needsReview" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="DashboardPorDepartamento">
+        <Key>
+          <PropertyRef Name="dimension"/>
+        </Key>
+        <Property Name="dimension" Type="Edm.String" Nullable="false"/>
+        <Property Name="total" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="DashboardPorCategoria">
+        <Key>
+          <PropertyRef Name="dimension"/>
+        </Key>
+        <Property Name="dimension" Type="Edm.String" Nullable="false"/>
+        <Property Name="total" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="DashboardPorEstado">
+        <Key>
+          <PropertyRef Name="dimension"/>
+        </Key>
+        <Property Name="dimension" Type="Edm.String" Nullable="false"/>
+        <Property Name="total" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="DashboardPorMes">
+        <Key>
+          <PropertyRef Name="dimension"/>
+        </Key>
+        <Property Name="dimension" Type="Edm.String" Nullable="false"/>
+        <Property Name="total" Type="Edm.Int32"/>
+      </EntityType>
+      <Annotations Target="DashboardService.DashboardKPIs">
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="KPI"/>
+            <PropertyValue Property="TypeNamePlural" String="KPIs"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="ID"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Abiertas"/>
+              <PropertyValue Property="Value" Path="abiertas"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Cerradas"/>
+              <PropertyValue Property="Value" Path="cerradas"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Necesitan revisión"/>
+              <PropertyValue Property="Value" Path="needsReview"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Abiertas"/>
+              <PropertyValue Property="Value" Path="abiertas"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Cerradas"/>
+              <PropertyValue Property="Value" Path="cerradas"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Necesitan revisión"/>
+              <PropertyValue Property="Value" Path="needsReview"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="DashboardService.DashboardPorDepartamento">
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Incidencia por departamento"/>
+            <PropertyValue Property="TypeNamePlural" String="Incidencias por departamento"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="dimension"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Departamento"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Departamento"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="DashboardService.DashboardPorCategoria">
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Incidencia por categoría"/>
+            <PropertyValue Property="TypeNamePlural" String="Incidencias por categoría"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="dimension"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Categoría"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Categoría"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="DashboardService.DashboardPorEstado">
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Incidencia por estado"/>
+            <PropertyValue Property="TypeNamePlural" String="Incidencias por estado"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="dimension"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Estado"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Estado"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="DashboardService.DashboardPorMes">
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="Incidencia por mes"/>
+            <PropertyValue Property="TypeNamePlural" String="Incidencias por mes"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="dimension"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Mes"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Mes"/>
+              <PropertyValue Property="Value" Path="dimension"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Total"/>
+              <PropertyValue Property="Value" Path="total"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

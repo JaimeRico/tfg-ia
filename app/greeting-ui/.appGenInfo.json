@@ -6,7 +6,7 @@
     "metadataFilename": "",
     "serviceUrl": "http://localhost:4004/odata/v4/greeting/",
     "appName": "greeting-ui",
-    "appTitle": "Hello World",
+    "appTitle": "Gestionar Incidencias",
     "appDescription": "Fiori application for managing greetings.",
     "appNamespace": "",
     "ui5Theme": "sap_horizon",

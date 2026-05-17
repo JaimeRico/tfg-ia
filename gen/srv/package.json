@@ -13,7 +13,7 @@
   "devDependencies": {
     "@cap-js/sqlite": "^2",
     "@sap/cds-dk": "^9",
-    "mbt": "^1.2.29",
+    "mbt": "^1.2.49",
     "rimraf": "^5.0.5"
   },
   "scripts": {
@@ -21,13 +21,33 @@
     "watch-greeting-ui": "cds watch --open greetingui/index.html?sap-ui-xx-viewCache=false --livereload false",
     "watch-createincidence": "cds watch --open tfgia.createincidence/index.html?sap-ui-xx-viewCache=false --livereload false",
     "undeploy": "cf undeploy tfg-ia --delete-services --delete-service-keys --delete-service-brokers",
-    "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "build": "rimraf resources mta_archives && /usr/local/bin/mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-dashboard": "cds watch --open dashboard/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "sapux": [
-    "app/greeting-ui"
+    "app/greeting-ui",
+    "app/dashboard"
   ],
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "hana"
+      },
+      "auth": {
+        "kind": "dummy"
+      }
+    },
+    "services": {
+      "DashboardService": {
+        "impl": "srv/dashboard-service.js"
+      },
+      "IncidenciasService": {
+        "impl": "srv/service.js"
+      }
+    }
+  },
   "engines": {
     "node": ">=20"
   }

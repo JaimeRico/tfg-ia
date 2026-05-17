@@ -1,0 +1,8 @@
+COLUMN TABLE DashboardService_DashboardKPIs (
+  ID NVARCHAR(5000) NOT NULL,
+  total INTEGER,
+  abiertas INTEGER,
+  cerradas INTEGER,
+  needsReview INTEGER,
+  PRIMARY KEY(ID)
+)

@@ -225,6 +225,292 @@
         }
       }
     },
+    "DashboardService": {
+      "@source": "srv/dashboard-service.cds",
+      "kind": "service"
+    },
+    "DashboardService.DashboardKPIs": {
+      "kind": "entity",
+      "@UI.HeaderInfo.TypeName": "KPI",
+      "@UI.HeaderInfo.TypeNamePlural": "KPIs",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "ID"
+      },
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Abiertas",
+          "Value": {
+            "=": "abiertas"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Cerradas",
+          "Value": {
+            "=": "cerradas"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Necesitan revisión",
+          "Value": {
+            "=": "needsReview"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Abiertas",
+          "Value": {
+            "=": "abiertas"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Cerradas",
+          "Value": {
+            "=": "cerradas"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Necesitan revisión",
+          "Value": {
+            "=": "needsReview"
+          }
+        }
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "total": {
+          "type": "cds.Integer"
+        },
+        "abiertas": {
+          "type": "cds.Integer"
+        },
+        "cerradas": {
+          "type": "cds.Integer"
+        },
+        "needsReview": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "DashboardService.DashboardPorDepartamento": {
+      "kind": "entity",
+      "@UI.HeaderInfo.TypeName": "Incidencia por departamento",
+      "@UI.HeaderInfo.TypeNamePlural": "Incidencias por departamento",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "dimension"
+      },
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Departamento",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Departamento",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "elements": {
+        "dimension": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "total": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "DashboardService.DashboardPorCategoria": {
+      "kind": "entity",
+      "@UI.HeaderInfo.TypeName": "Incidencia por categoría",
+      "@UI.HeaderInfo.TypeNamePlural": "Incidencias por categoría",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "dimension"
+      },
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Categoría",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Categoría",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "elements": {
+        "dimension": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "total": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "DashboardService.DashboardPorEstado": {
+      "kind": "entity",
+      "@UI.HeaderInfo.TypeName": "Incidencia por estado",
+      "@UI.HeaderInfo.TypeNamePlural": "Incidencias por estado",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "dimension"
+      },
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Estado",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Estado",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "elements": {
+        "dimension": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "total": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "DashboardService.DashboardPorMes": {
+      "kind": "entity",
+      "@UI.HeaderInfo.TypeName": "Incidencia por mes",
+      "@UI.HeaderInfo.TypeNamePlural": "Incidencias por mes",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "dimension"
+      },
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Mes",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Mes",
+          "Value": {
+            "=": "dimension"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Total",
+          "Value": {
+            "=": "total"
+          }
+        }
+      ],
+      "elements": {
+        "dimension": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "total": {
+          "type": "cds.Integer"
+        }
+      }
+    },
     "IncidenciasService": {
       "@source": "srv/service.cds",
       "kind": "service"

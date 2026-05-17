@@ -1,0 +1,5 @@
+COLUMN TABLE DashboardService_DashboardPorMes (
+  dimension NVARCHAR(5000) NOT NULL,
+  total INTEGER,
+  PRIMARY KEY(dimension)
+)
