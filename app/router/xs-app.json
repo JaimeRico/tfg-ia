@@ -2,6 +2,11 @@
   "authenticationMethod": "none",
   "routes": [
     {
+      "source": "^/$",
+      "localDir": ".",
+      "authenticationType": "none"
+    },
+    {
       "source": "^/odata/(.*)$",
       "target": "/odata/$1",
       "destination": "srv-api",
@@ -15,8 +20,8 @@
       "authenticationType": "none"
     },
     {
-      "source": "^/greetinui/(.*)$",
-      "target": "/greetinui/$1",
+      "source": "^/greetingui/(.*)$",
+      "target": "/greetingui/$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "none"
     },
