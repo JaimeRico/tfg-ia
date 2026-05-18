@@ -6,4 +6,5 @@ module.exports = class IncidenciasService extends cds.ApplicationService {
         this.before('CREATE', 'Incidencias', incidenciasHandler.sugerirConIA)
         await super.init()
     }
+    
 }

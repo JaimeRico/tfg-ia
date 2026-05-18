@@ -90,6 +90,15 @@
 				}
 			}
 		},
+		"extends": {
+			"extensions": {
+				"sap.ui.controllerExtensions": {
+					"sap.fe.templates.ObjectPage.ObjectPageController": {
+						"controllerName": "greetingui.ext.controller.ObjectPageExtension"
+					}
+				}
+			}
+		},
 		"resources": {
 			"css": []
 		},

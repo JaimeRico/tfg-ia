@@ -568,6 +568,18 @@
           }
         }
       ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "Responder con IA",
+          "Action": "responderConIA"
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "Responder manualmente",
+          "Action": "IncidenciasService.Incidencias/responderManualmente"
+        }
+      ],
       "@UI.FieldGroup#Principal.$Type": "UI.FieldGroupType",
       "@UI.FieldGroup#Principal.Data": [
         {
@@ -850,6 +862,39 @@
         },
         "resolved_at": {
           "type": "cds.Timestamp"
+        }
+      },
+      "actions": {
+        "responderConIA": {
+          "kind": "action",
+          "@Core.OperationAvailable": true,
+          "@Common.SideEffects.TargetProperties": [
+            "hr_response",
+            "status",
+            "resolved_by",
+            "resolved_at"
+          ],
+          "returns": {
+            "type": "cds.String"
+          }
+        },
+        "responderManualmente": {
+          "kind": "action",
+          "@Core.OperationAvailable": true,
+          "@Common.SideEffects.TargetProperties": [
+            "hr_response",
+            "status",
+            "resolved_by",
+            "resolved_at"
+          ],
+          "params": {
+            "respuesta": {
+              "type": "cds.String"
+            }
+          },
+          "returns": {
+            "type": "cds.String"
+          }
         }
       }
     },

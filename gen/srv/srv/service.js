@@ -3,7 +3,37 @@ const incidenciasHandler = require('./handler/incidencias-service');
 
 module.exports = class IncidenciasService extends cds.ApplicationService {
     async init() {
+        this.on('responderConIA', 'Incidencias', async (req) => {
+            const id = req.params[0].ID
+            const { Incidencias } = cds.entities('tfg')
 
+            const incidencia = await SELECT.one.from(Incidencias).where({ ID: id })
+            if (!incidencia) return req.error(404, 'Incidencia no encontrada')
+
+            await UPDATE(Incidencias).set({
+                hr_response : incidencia.ai_recommendation,
+                status      : 'respondido',
+                resolved_by : req.user?.id || 'RRHH',
+                resolved_at : new Date().toISOString()
+            }).where({ ID: id })
+
+            return 'Incidencia respondida con la recomendación de la IA'
+        })
+
+        this.on('responderManualmente', 'Incidencias', async (req) => {
+            const id = req.params[0].ID
+            const { respuesta } = req.data
+            const { Incidencias } = cds.entities('tfg')
+
+            await UPDATE(Incidencias).set({
+                hr_response : respuesta,
+                status      : 'respondido',
+                resolved_by : req.user?.id || 'RRHH',
+                resolved_at : new Date().toISOString()
+            }).where({ ID: id })
+
+            return 'Incidencia respondida manualmente'
+        })
         this.before('CREATE', 'Incidencias', async (req) => {
             /*if (
                 !req.user.is('Empleado') &&

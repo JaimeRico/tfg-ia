@@ -51,6 +51,15 @@
         <Property Name="resolved_by" Type="Edm.String" MaxLength="255"/>
         <Property Name="resolved_at" Type="Edm.DateTimeOffset" Precision="7"/>
       </EntityType>
+      <Action Name="responderConIA" IsBound="true">
+        <Parameter Name="in" Type="IncidenciasService.Incidencias"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="responderManualmente" IsBound="true">
+        <Parameter Name="in" Type="IncidenciasService.Incidencias"/>
+        <Parameter Name="respuesta" Type="Edm.String"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
       <Annotations Target="IncidenciasService.Incidencias">
         <Annotation Term="UI.LineItem">
           <Collection>
@@ -81,6 +90,18 @@
             <Record Type="UI.DataField">
               <PropertyValue Property="Label" String="Tipo"/>
               <PropertyValue Property="Value" Path="type"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Responder con IA"/>
+              <PropertyValue Property="Action" String="responderConIA"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Responder manualmente"/>
+              <PropertyValue Property="Action" String="IncidenciasService.Incidencias/responderManualmente"/>
             </Record>
           </Collection>
         </Annotation>
@@ -394,6 +415,36 @@
               <PropertyValue Property="Value" String="cerrado"/>
             </Record>
           </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="IncidenciasService.responderConIA(IncidenciasService.Incidencias)">
+        <Annotation Term="Core.OperationAvailable" Bool="true"/>
+        <Annotation Term="Common.SideEffects">
+          <Record Type="Common.SideEffectsType">
+            <PropertyValue Property="TargetProperties">
+              <Collection>
+                <String>hr_response</String>
+                <String>status</String>
+                <String>resolved_by</String>
+                <String>resolved_at</String>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="IncidenciasService.responderManualmente(IncidenciasService.Incidencias)">
+        <Annotation Term="Core.OperationAvailable" Bool="true"/>
+        <Annotation Term="Common.SideEffects">
+          <Record Type="Common.SideEffectsType">
+            <PropertyValue Property="TargetProperties">
+              <Collection>
+                <String>hr_response</String>
+                <String>status</String>
+                <String>resolved_by</String>
+                <String>resolved_at</String>
+              </Collection>
+            </PropertyValue>
+          </Record>
         </Annotation>
       </Annotations>
     </Schema>

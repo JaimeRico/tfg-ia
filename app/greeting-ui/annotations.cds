@@ -10,14 +10,18 @@ annotate service.Incidencias with @(
         { $Type: 'UI.DataField', Label: 'Revisión necesaria', Value: needs_review },
         { $Type: 'UI.DataField', Label: 'Tipo',               Value: type         }
     ],
-    /*UI.Identification : [
+    UI.Identification : [
         {
-            $Type : 'UI.DataFieldForAction',
-            Label : 'Responder y cerrar',
-            Action: 'IncidenciasService.responderYCerrar'
+            $Type  : 'UI.DataFieldForAction',
+            Label  : 'Responder con IA',
+            Action : 'responderConIA'
+        },
+        {
+            $Type  : 'UI.DataFieldForAction',
+            Label  : 'Responder manualmente',
+            Action : 'IncidenciasService.Incidencias/responderManualmente'
         }
-    ],*/
-
+    ],
     UI.FieldGroup #Principal : {
         $Type : 'UI.FieldGroupType',
         Data  : [
@@ -27,7 +31,6 @@ annotate service.Incidencias with @(
             { $Type: 'UI.DataField', Label: 'Tipo',        Value: type       }
         ]
     },
-
     UI.FieldGroup #ClasificacionIA : {
         $Type : 'UI.FieldGroupType',
         Data  : [
@@ -35,29 +38,26 @@ annotate service.Incidencias with @(
             { $Type: 'UI.DataField', Label: 'Departamento',       Value: department        },
             { $Type: 'UI.DataField', Label: 'Categoría',          Value: category          },
             { $Type: 'UI.DataField', Label: 'Revisión necesaria', Value: needs_review      },
-            { $Type: 'UI.DataField', Label: 'Clasificado por IA',    Value: ai_suggested      },
-            { $Type: 'UI.DataField', Label: 'Justificación IA',          Value: ai_reason         },
+            { $Type: 'UI.DataField', Label: 'Clasificado por IA', Value: ai_suggested      },
+            { $Type: 'UI.DataField', Label: 'Justificación IA',   Value: ai_reason         },
             { $Type: 'UI.DataField', Label: 'Recomendación IA',   Value: ai_recommendation }
         ]
     },
-
     UI.FieldGroup #Seguimiento : {
         $Type : 'UI.FieldGroupType',
         Data  : [
-            { $Type: 'UI.DataField', Label: 'Estado',      Value: status     },
-            { $Type: 'UI.DataField', Label: 'Creado el',   Value: createdAt  },
-           /* { $Type: 'UI.DataField', Label: 'Modificado el', Value: modifiedAt }*/
+            { $Type: 'UI.DataField', Label: 'Estado',    Value: status    },
+            { $Type: 'UI.DataField', Label: 'Creado el', Value: createdAt }
         ]
     },
     UI.FieldGroup #Resolucion : {
-    $Type : 'UI.FieldGroupType',
-    Data  : [
-        { $Type: 'UI.DataField', Label: 'Respuesta de RRHH', Value: hr_response },
-        { $Type: 'UI.DataField', Label: 'Resuelto por',      Value: resolved_by },
-        { $Type: 'UI.DataField', Label: 'Resuelto el',       Value: resolved_at }
-    ]
+        $Type : 'UI.FieldGroupType',
+        Data  : [
+            { $Type: 'UI.DataField', Label: 'Respuesta de RRHH', Value: hr_response },
+            { $Type: 'UI.DataField', Label: 'Resuelto por',      Value: resolved_by },
+            { $Type: 'UI.DataField', Label: 'Resuelto el',       Value: resolved_at }
+        ]
     },
-
     UI.Facets : [
         {
             $Type  : 'UI.ReferenceFacet',
@@ -85,3 +85,18 @@ annotate service.Incidencias with @(
         }
     ]
 );
+
+annotate service.Incidencias with actions {
+    responderConIA @(
+        Core.OperationAvailable : true,
+        Common.SideEffects : {
+            TargetProperties: ['hr_response', 'status', 'resolved_by', 'resolved_at']
+        }
+    );
+    responderManualmente @(
+        Core.OperationAvailable : true,
+        Common.SideEffects : {
+            TargetProperties: ['hr_response', 'status', 'resolved_by', 'resolved_at']
+        }
+    );
+};

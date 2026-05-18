@@ -7,3 +7,8 @@ Content-Type: application/json
         "body": "Desde las 10:00 los usuarios no pueden completar pagos. El error aparece en checkout.",
             "language": "es"
 } 
+### Responder con IA
+POST https://d1c6e5d6trial-dev-tfg-ia-srv.cfapps.us10-001.hana.ondemand.com/odata/v4/incidencias/Incidencias(e89241b9-feb2-4cb4-86f1-a1b86453e6e5)/responderConIA
+Content-Type: application/json
+
+{}
