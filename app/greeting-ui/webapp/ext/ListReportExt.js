@@ -3,7 +3,7 @@ sap.ui.define([], function () {
 
     return {
         onOpenCreateView: function () {
-            window.open("/createincidence/index.html", "_blank");
+            window.open("/tfgia.createincidence/index.html?role=empleado&sap-ui-xx-viewCache=false", "_blank");
         }
     };
 });

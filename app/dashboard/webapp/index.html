@@ -1,34 +1,280 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dashboard Incidencias</title>
-    <style>
-        html, body, body > div, #content { height: 100%; }
-    </style>
-    <script
-        id="sap-ui-bootstrap"
-        src="https://ui5.sap.com/1.147.2/resources/sap-ui-core.js"
-        data-sap-ui-theme="sap_horizon"
-        data-sap-ui-resource-roots='{"dashboard": "./"}'
-        data-sap-ui-on-init="module:sap/ui/core/ComponentSupport"
-        data-sap-ui-compat-version="edge"
-        data-sap-ui-async="true"
-        data-sap-ui-frame-options="trusted"
-        data-sap-ui-preload=""
-        data-sap-ui-libs="sap.m,sap.ui.core,sap.viz,sap.ui.layout"
-    ></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Dashboard Incidencias</title>
+
+  <style>
+    html, body, #content {
+      height: 100%;
+      margin: 0;
+    }
+
+    .dashboardShell {
+      background: #f5f6f7;
+      min-height: 100%;
+    }
+
+    .dashboardHeader {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      margin-bottom: 1rem;
+    }
+
+    .dashboardKpiGrid {
+      gap: 1rem;
+    }
+
+    .kpiCard {
+      min-width: 180px;
+      flex: 1 1 180px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      border-left: 5px solid #0a6ed1;
+    }
+
+    .kpiNumber {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0a2342;
+      line-height: 1.15;
+    }
+
+    .kpiLabel {
+      font-weight: 700;
+      color: #1d2d3e;
+      margin-top: .25rem;
+    }
+
+    .kpiSubLabel {
+      color: #607080;
+      font-size: .875rem;
+      margin-top: .25rem;
+    }
+
+    .distributionGrid {
+      gap: 1rem;
+    }
+
+    .distributionCard {
+      flex: 1 1 430px;
+      min-width: 320px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .distributionTitle {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .75rem;
+      color: #1d2d3e;
+    }
+
+    .distRow {
+      margin-bottom: .85rem;
+    }
+
+    .distRowHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: .35rem;
+    }
+
+    .distLabel {
+      font-weight: 600;
+      color: #25364a;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .distNumber {
+      font-weight: 700;
+      color: #0a6ed1;
+      min-width: 2rem;
+      text-align: right;
+    }
+
+    .barTrack {
+      height: .55rem;
+      background: #e7edf3;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .barFill {
+      height: 100%;
+      background: #0a6ed1;
+      border-radius: 999px;
+      min-width: 4px;
+    }
+
+    .emptyState {
+      color: #6a7785;
+      font-style: italic;
+      padding: .5rem 0;
+    }
+  </style>
+
+  <script
+    id="sap-ui-bootstrap"
+    src="https://sapui5.hana.ondemand.com/1.147.2/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-libs="sap.m,sap.ui.core,sap.ui.layout"
+    data-sap-ui-compat-version="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-frame-options="trusted">
+  </script>
+
+  <script>
+    sap.ui.getCore().attachInit(async function () {
+      const base = "/odata/v4/dashboard/";
+
+      async function getEntitySet(name) {
+        try {
+          const response = await fetch(base + name, { headers: { "Accept": "application/json" } });
+          if (!response.ok) {
+            throw new Error(name + " -> HTTP " + response.status);
+          }
+          const data = await response.json();
+          return data.value || [];
+        } catch (error) {
+          console.error("Error cargando " + name, error);
+          return [];
+        }
+      }
+
+      const [kpisRows, departamento, categoria, estado, mes] = await Promise.all([
+        getEntitySet("DashboardKPIs"),
+        getEntitySet("DashboardPorDepartamento"),
+        getEntitySet("DashboardPorCategoria"),
+        getEntitySet("DashboardPorEstado"),
+        getEntitySet("DashboardPorMes")
+      ]);
+
+      const kpis = kpisRows[0] || { total: 0, abiertas: 0, cerradas: 0, needsReview: 0 };
+
+      function kpiCard(title, value, subtitle) {
+        return new sap.m.VBox({
+          items: [
+            new sap.m.Text({ text: String(value ?? 0) }).addStyleClass("kpiNumber"),
+            new sap.m.Text({ text: title }).addStyleClass("kpiLabel"),
+            new sap.m.Text({ text: subtitle }).addStyleClass("kpiSubLabel")
+          ]
+        }).addStyleClass("kpiCard");
+      }
+
+      function normalizeRows(rows) {
+        return (rows || []).map(function (row) {
+          return {
+            dimension: row.dimension || "Sin valor",
+            total: Number(row.total || 0)
+          };
+        });
+      }
+
+      function distributionCard(title, rows) {
+        const normalizedRows = normalizeRows(rows);
+        const max = normalizedRows.reduce(function (acc, row) {
+          return Math.max(acc, row.total);
+        }, 0);
+
+        const content = [new sap.m.Text({ text: title }).addStyleClass("distributionTitle")];
+
+        if (!normalizedRows.length) {
+          content.push(new sap.m.Text({ text: "Sin datos disponibles" }).addStyleClass("emptyState"));
+        } else {
+          normalizedRows.forEach(function (row) {
+            const percent = max > 0 ? Math.max(6, Math.round((row.total / max) * 100)) : 0;
+            const bar = new sap.ui.core.HTML({
+              content:
+                '<div class="distRow">' +
+                  '<div class="distRowHeader">' +
+                    '<span class="distLabel">' + escapeHtml(row.dimension) + '</span>' +
+                    '<span class="distNumber">' + row.total + '</span>' +
+                  '</div>' +
+                  '<div class="barTrack"><div class="barFill" style="width:' + percent + '%"></div></div>' +
+                '</div>'
+            });
+            content.push(bar);
+          });
+        }
+
+        return new sap.m.VBox({ items: content }).addStyleClass("distributionCard");
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      const page = new sap.m.Page({
+        title: "RRHH · Dashboard de Incidencias",
+        showNavButton: false,
+        content: [
+          new sap.m.VBox({
+            width: "100%",
+            items: [
+              new sap.m.Title({ text: "Resumen general", level: "H2" }).addStyleClass("sapUiSmallMarginBottom"),
+              new sap.m.FlexBox({
+                wrap: "Wrap",
+                width: "100%",
+                items: [
+                  kpiCard("Total", kpis.total, "Incidencias registradas"),
+                  kpiCard("Abiertas", kpis.abiertas, "Pendientes o en curso"),
+                  kpiCard("Resueltas", kpis.cerradas, "Respondidas o cerradas"),
+                  kpiCard("Revisión", kpis.needsReview, "Necesitan revisión")
+                ]
+              }).addStyleClass("dashboardKpiGrid sapUiMediumMarginBottom"),
+
+              new sap.m.Title({ text: "Distribución", level: "H2" }).addStyleClass("sapUiSmallMarginBottom"),
+              new sap.m.FlexBox({
+                wrap: "Wrap",
+                width: "100%",
+                items: [
+                  distributionCard("Por departamento", departamento),
+                  distributionCard("Por categoría", categoria),
+                  distributionCard("Por estado", estado),
+                  distributionCard("Por mes", mes)
+                ]
+              }).addStyleClass("distributionGrid")
+            ]
+          }).addStyleClass("dashboardShell sapUiMediumMargin")
+        ],
+        footer: new sap.m.Toolbar({
+          content: [
+            new sap.m.Button({
+              text: "Cerrar sesión / Inicio",
+              icon: "sap-icon://home",
+              press: function () { window.location.href = "/router/index.html"; }
+            }),
+            new sap.m.ToolbarSpacer(),
+            new sap.m.Button({
+              text: "Gestionar incidencias",
+              icon: "sap-icon://list",
+              press: function () { window.location.href = "/greetinui/index.html?role=rrhh&sap-ui-xx-viewCache=false"; }
+            })
+          ]
+        })
+      });
+
+      const app = new sap.m.App({ pages: [page] });
+      app.placeAt("content");
+    });
+  </script>
 </head>
-<body class="sapUiBody sapUiSizeCompact" id="content">
-    <div
-        data-sap-ui-component
-        data-name="dashboard"
-        data-id="container"
-        data-settings='{"id": "dashboard"}'
-        data-handle-validation="true"
-    >
-    <a href="/" style="position:fixed; bottom:24px; left:24px; background:#0a6ed1; color:white; padding:10px 18px; border-radius:6px; font-size:13px; text-decoration:none; font-family:Arial,sans-serif; z-index:9999; box-shadow:0 2px 8px rgba(0,0,0,0.2);">← Inicio</a>
-</body>
+<body class="sapUiBody sapUiSizeCompact" id="content"></body>
 </html>

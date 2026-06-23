@@ -39,8 +39,9 @@ annotate service.Incidencias with @(
             { $Type: 'UI.DataField', Label: 'Categoría',          Value: category          },
             { $Type: 'UI.DataField', Label: 'Revisión necesaria', Value: needs_review      },
             { $Type: 'UI.DataField', Label: 'Clasificado por IA', Value: ai_suggested      },
-            { $Type: 'UI.DataField', Label: 'Justificación IA',   Value: ai_reason         },
-            { $Type: 'UI.DataField', Label: 'Recomendación IA',   Value: ai_recommendation }
+            { $Type: 'UI.DataField', Label: 'Justificación IA',        Value: ai_reason               },
+            { $Type: 'UI.DataField', Label: 'Recomendación interna', Value: ai_recommendation      },
+            { $Type: 'UI.DataField', Label: 'Respuesta sugerida al empleado', Value: ai_response_suggestion }
         ]
     },
     UI.FieldGroup #Seguimiento : {

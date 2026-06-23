@@ -11,13 +11,13 @@ module.exports = class IncidenciasService extends cds.ApplicationService {
             if (!incidencia) return req.error(404, 'Incidencia no encontrada')
 
             await UPDATE(Incidencias).set({
-                hr_response : incidencia.ai_recommendation,
+                hr_response : incidencia.ai_response_suggestion || incidencia.ai_recommendation,
                 status      : 'respondido',
                 resolved_by : req.user?.id || 'RRHH',
                 resolved_at : new Date().toISOString()
             }).where({ ID: id })
 
-            return 'Incidencia respondida con la recomendación de la IA'
+            return 'Incidencia respondida con la respuesta sugerida por la IA'
         })
 
         this.on('responderManualmente', 'Incidencias', async (req) => {

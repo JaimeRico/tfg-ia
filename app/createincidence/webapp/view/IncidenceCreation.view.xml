@@ -5,18 +5,25 @@
 
     <Page id="page" title="Crear incidencia">
         <content>
-            <VBox class="sapUiSmallMargin">
+            <VBox class="sapUiSmallMargin" width="100%">
+                <MessageStrip
+                    text="Perfil simulado: Empleado. Desde esta pantalla se crea una incidencia y después puede consultarse en 'Mis incidencias'."
+                    type="Information"
+                    showIcon="true"
+                    class="sapUiSmallMarginBottom" />
+
                 <Label text="Asunto" />
-                <Input id="subjectInput" placeholder="Introduce el asunto" />
+                <Input id="subjectInput" placeholder="Ejemplo: No puedo acceder a mi nómina" />
 
                 <Label text="Descripción" class="sapUiSmallMarginTop" />
                 <TextArea
                     id="bodyInput"
                     rows="6"
-                    placeholder="Describe la incidencia" />
+                    width="100%"
+                    placeholder="Describe la incidencia con el mayor detalle posible" />
 
                 <Label text="Idioma" class="sapUiSmallMarginTop" />
-                <Input id="languageInput" value="es" />
+                <Input id="languageInput" value="es" width="8rem" />
 
                 <HBox class="sapUiSmallMarginTop" renderType="Bare">
                     <Button
@@ -25,9 +32,9 @@
                         press=".onCreateIncident" />
 
                     <Button
-                        text="Ir a RRHH"
+                        text="Ver mis incidencias"
                         class="sapUiTinyMarginBegin"
-                        press=".onGoToRRHH" />
+                        press=".onGoToMyIncidents" />
                 </HBox>
             </VBox>
         </content>

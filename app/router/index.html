@@ -6,151 +6,67 @@
     <title>Sistema de Gestión de Incidencias</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: '72', Arial, sans-serif;
-            background: #f5f6f7;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background: #0a6ed1;
-            color: white;
-            padding: 16px 32px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        header h1 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        header span {
-            font-size: 13px;
-            opacity: 0.85;
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 48px 24px;
-            gap: 16px;
-        }
-
-        h2 {
-            font-size: 22px;
-            color: #32363a;
-            margin-bottom: 8px;
-        }
-
-        p.subtitle {
-            color: #6a6d70;
-            font-size: 14px;
-            margin-bottom: 32px;
-        }
-
-        .cards {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 900px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 32px 28px;
-            width: 260px;
-            text-decoration: none;
-            color: inherit;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            border: 1px solid #e5e5e5;
-            transition: box-shadow 0.2s, transform 0.2s;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .card:hover {
-            box-shadow: 0 6px 24px rgba(0,0,0,0.14);
-            transform: translateY(-2px);
-        }
-
-        .card-icon {
-            font-size: 36px;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #32363a;
-        }
-
-        .card-desc {
-            font-size: 13px;
-            color: #6a6d70;
-            line-height: 1.5;
-        }
-
-        .card-tag {
-            display: inline-block;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            width: fit-content;
-        }
-
+        body { font-family: '72', Arial, sans-serif; background: #f5f6f7; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: #0a6ed1; color: white; padding: 16px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        header h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+        header span { font-size: 13px; opacity: 0.9; }
+        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; }
+        h2 { font-size: 24px; color: #32363a; margin-bottom: 8px; }
+        .subtitle { color: #6a6d70; font-size: 14px; margin-bottom: 32px; text-align:center; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; width: 100%; max-width: 1120px; }
+        .card { background: white; border-radius: 10px; padding: 30px 26px; text-decoration: none; color: inherit; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #e5e5e5; transition: box-shadow 0.2s, transform 0.2s; display: flex; flex-direction: column; gap: 12px; min-height: 210px; }
+        .card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.16); transform: translateY(-3px); }
+        .card-icon { font-size: 40px; }
+        .card-title { font-size: 18px; font-weight: 700; color: #32363a; }
+        .card-desc { font-size: 13px; color: #6a6d70; line-height: 1.5; flex: 1; }
+        .card-tag { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 700; width: fit-content; }
         .tag-employee { background: #e8f3ff; color: #0a6ed1; }
-        .tag-rrhh     { background: #fff3e0; color: #e67e22; }
-        .tag-admin    { background: #e8f5e9; color: #27ae60; }
-
-        footer {
-            text-align: center;
-            padding: 16px;
-            font-size: 12px;
-            color: #aaa;
-        }
+        .tag-rrhh { background: #fff3e0; color: #b25f00; }
+        .tag-admin { background: #e8f5e9; color: #107e3e; }
+        footer { text-align: center; padding: 16px; font-size: 12px; color: #777; }
     </style>
 </head>
 <body>
     <header>
-        <div>
-            <h1>🏢 Sistema de Gestión de Incidencias</h1>
-            <span>Powered by SAP CAP · Claude AI · SAP BTP</span>
-        </div>
+        <h1>🏢 Sistema de Gestión de Incidencias</h1>
+        <span>Demo local · SAP CAP · SAPUI5/Fiori · IA generativa</span>
     </header>
 
     <main>
-        <h2>¿Qué quieres hacer hoy?</h2>
-        <p class="subtitle">Selecciona una opción para continuar</p>
+        <h2>Menú de perfiles simulados</h2>
+        <p class="subtitle">Selecciona el perfil con el que quieres realizar la demo.</p>
 
         <div class="cards">
-            <a class="card" href="/tfgiacreateincidence/">
+            <a class="card" href="/tfgia.createincidence/index.html?role=empleado&sap-ui-xx-viewCache=false">
                 <div class="card-icon">📝</div>
-                <div class="card-title">Crear Incidencia</div>
-                <div class="card-desc">Describe tu problema y la IA lo clasificará automáticamente.</div>
+                <div class="card-title">Empleado · Crear incidencia</div>
+                <div class="card-desc">El empleado registra una nueva incidencia describiendo el problema en lenguaje natural.</div>
                 <span class="card-tag tag-employee">Empleado</span>
             </a>
 
-            <a class="card" href="/greetingui/">
-                <div class="card-icon">📋</div>
-                <div class="card-title">Gestionar Incidencias</div>
-                <div class="card-desc">Revisa, asigna y gestiona todas las incidencias del sistema.</div>
-                <span class="card-tag tag-rrhh">RRHH / IT Support</span>
+            <a class="card" href="/greetinui/index.html?role=empleado&sap-ui-xx-viewCache=false">
+                <div class="card-icon">👤</div>
+                <div class="card-title">Empleado · Mis incidencias</div>
+                <div class="card-desc">Consulta las incidencias registradas durante la demo. En esta versión local el perfil es simulado.</div>
+                <span class="card-tag tag-employee">Empleado</span>
             </a>
 
-            <a class="card" href="/dashboard/">
+            <a class="card" href="/greetinui/index.html?role=rrhh&sap-ui-xx-viewCache=false">
+                <div class="card-icon">📋</div>
+                <div class="card-title">RRHH · Gestionar incidencias</div>
+                <div class="card-desc">RRHH revisa incidencias, consulta el detalle y puede responderlas con apoyo de IA o manualmente.</div>
+                <span class="card-tag tag-rrhh">RRHH</span>
+            </a>
+
+            <a class="card" href="/dashboard/index.html?role=rrhh&sap-ui-xx-viewCache=false">
                 <div class="card-icon">📊</div>
-                <div class="card-title">Dashboard</div>
-                <div class="card-desc">Visualiza métricas y estadísticas de incidencias en tiempo real.</div>
-                <span class="card-tag tag-admin">Admin / RRHH</span>
+                <div class="card-title">RRHH · Dashboard</div>
+                <div class="card-desc">Visualiza métricas del sistema: totales, abiertas, cerradas y distribuciones principales.</div>
+                <span class="card-tag tag-admin">RRHH / Admin</span>
+            </a>
+        </div>
+    </main>
+
+    <footer>Los perfiles son simulados para la demo local. La autenticación real mediante XSUAA queda como mejora futura.</footer>
+</body>
+</html>

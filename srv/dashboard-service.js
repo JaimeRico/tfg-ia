@@ -9,8 +9,14 @@ module.exports = class DashboardService extends cds.ApplicationService {
 
       const all    = await db.run(SELECT.from(Incidencias));
       const total  = all.length;
-      const abiertas = all.filter(i => ['nuevo','asignado','en_progreso','respondido'].includes(i.status)).length;
-      const cerradas = all.filter(i => i.status === 'cerrado').length;
+      // En el flujo de la demo, cuando RRHH responde una incidencia,
+      // el servicio la marca como "respondido". Para el dashboard,
+      // ese estado debe contar como resuelto/cerrado, no como abierto.
+      const estadosAbiertos = ['nuevo', 'asignado', 'en_progreso'];
+      const estadosCerrados = ['respondido', 'cerrado', 'resuelto'];
+
+      const abiertas = all.filter(i => estadosAbiertos.includes(i.status)).length;
+      const cerradas = all.filter(i => estadosCerrados.includes(i.status)).length;
       const needsReview = all.filter(i => i.needs_review === true).length;
 
       return [{ ID: 'kpi-1', total, abiertas, cerradas, needsReview }];
@@ -46,7 +52,12 @@ module.exports = class DashboardService extends cds.ApplicationService {
       const all = await db.run(SELECT.from(Incidencias).columns('status'));
       const map = {};
       all.forEach(i => {
-        const key = i.status || 'Sin estado';
+        let key = i.status || 'Sin estado';
+
+        // Mostrar el mismo concepto que ve el empleado: una incidencia
+        // respondida por RRHH se considera resuelta.
+        if (key === 'respondido' || key === 'cerrado') key = 'resuelto';
+
         map[key] = (map[key] || 0) + 1;
       });
       return Object.entries(map).map(([dimension, total]) => ({ dimension, total }));

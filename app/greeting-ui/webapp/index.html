@@ -1,36 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Gestionar Incidencias</title>
     <style>
-        html, body, body > div, #container, #container-uiarea {
-            height: 100%;
+        html, body, body > div, #container, #container-uiarea { height: 100%; margin: 0; }
+        .homeButton {
+            position: fixed; bottom: 24px; left: 24px; background: #0a6ed1; color: white;
+            padding: 10px 18px; border-radius: 6px; font-size: 13px; text-decoration: none;
+            font-family: Arial, sans-serif; z-index: 9999; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
     </style>
     <script
         id="sap-ui-bootstrap"
         src="https://sapui5.hana.ondemand.com/1.145.0/resources/sap-ui-core.js"
         data-sap-ui-theme="sap_horizon"
-        data-sap-ui-resource-roots='{
+        data-sap-ui-resourceroots='{
             "greetingui": "./"
         }'
         data-sap-ui-on-init="module:sap/ui/core/ComponentSupport"
         data-sap-ui-compat-version="edge"
         data-sap-ui-async="true"
-        data-sap-ui-frame-options="trusted"
-    ></script>
+        data-sap-ui-frame-options="trusted">
+    </script>
 </head>
 <body class="sapUiBody sapUiSizeCompact" id="content">
     <div
         data-sap-ui-component
         data-name="greetingui"
         data-id="container"
-        data-settings='{"id" : "greetingui"}'
-        data-handle-validation="true"
-    ></div>
+        data-settings='{"id":"greetingui"}'
+        data-handle-validation="true">
+    </div>
+
+    <a class="homeButton" href="/router/index.html">← Cerrar sesión / Inicio</a>
+
+    <script>
+        (function () {
+            "use strict";
+
+            const params = new URLSearchParams(window.location.search);
+            const role = (params.get("role") || sessionStorage.getItem("demoRole") || "rrhh").toLowerCase();
+            sessionStorage.setItem("demoRole", role);
+            document.title = role === "empleado" ? "Empleado - Mis incidencias" : "RRHH - Gestionar incidencias";
+
+            function isEmployee() {
+                return role === "empleado";
+            }
+
+            function isObjectPage() {
+                return /Incidencias\(/.test(decodeURIComponent(window.location.hash || ""));
+            }
+
+            function getKeyExpression() {
+                const hash = decodeURIComponent(window.location.hash || "");
+                const match = hash.match(/Incidencias\(([^)]+)\)/);
+                return match ? match[1] : null;
+            }
+
+            function hideElement(el) {
+                if (el && el.style) {
+                    el.style.setProperty("display", "none", "important");
+                    el.style.setProperty("visibility", "hidden", "important");
+                }
+            }
+
+            function showElement(el) {
+                if (el && el.style) {
+                    el.style.removeProperty("display");
+                    el.style.removeProperty("visibility");
+                }
+            }
+
+            function elementText(el) {
+                return (el && (el.innerText || el.textContent) || "").replace(/\s+/g, " ").trim();
+            }
+
+            function closestActionElement(el) {
+                return el.closest("button,[role='button'],.sapMBtn,.sapMBtnBase") || el;
+            }
+
+            function isActionText(text, actionLabel) {
+                return new RegExp("^" + actionLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$", "i").test(text.trim());
+            }
+
+            function hideActionButtonsForEmployee() {
+                const nodes = document.querySelectorAll("button,[role='button'],.sapMBtn,.sapMBtnInner,span,a,div");
+                nodes.forEach(function (el) {
+                    const text = elementText(el);
+                    if (isActionText(text, "Responder con IA") || isActionText(text, "Responder manualmente")) {
+                        hideElement(closestActionElement(el));
+                    }
+                });
+            }
+
+            function hideClassificationForEmployee() {
+                const label = "Clasificación y apoyo de IA";
+
+                document.querySelectorAll("[aria-label]").forEach(function (el) {
+                    const aria = el.getAttribute("aria-label") || "";
+                    if (aria.indexOf(label) !== -1) {
+                        hideElement(el);
+                    }
+                });
+
+                document.querySelectorAll("[id]").forEach(function (el) {
+                    const id = el.getAttribute("id") || "";
+                    if (/ClasificacionIA|Clasificaci/i.test(id)) {
+                        const section = el.closest(".sapUxAPObjectPageSection,.sapUxAPObjectPageSubSection,.sapMITHItem,.sapMITBItem,[role='tab']") || el;
+                        hideElement(section);
+                    }
+                });
+
+                const candidates = document.querySelectorAll("h1,h2,h3,h4,h5,span,div,[role='tab'],button,a");
+                candidates.forEach(function (el) {
+                    const text = elementText(el);
+                    if (text === label) {
+                        hideElement(el.closest(".sapUxAPObjectPageSection,.sapUxAPObjectPageSubSection,.sapMITHItem,.sapMITBItem,.sapUxAPAnchorBarButton,[role='tab']") || el);
+                    }
+                });
+            }
+
+            function applyRoleRules() {
+                if (!isEmployee()) {
+                    return;
+                }
+
+                hideActionButtonsForEmployee();
+                hideClassificationForEmployee();
+            }
+
+            function loadSapDialog(callback) {
+                sap.ui.require([
+                    "sap/m/Dialog",
+                    "sap/m/Button",
+                    "sap/m/TextArea",
+                    "sap/m/VBox",
+                    "sap/m/Label",
+                    "sap/m/MessageBox",
+                    "sap/m/MessageToast"
+                ], callback);
+            }
+
+            async function postAction(actionName, payload, MessageToast, MessageBox) {
+                const key = getKeyExpression();
+                if (!key) {
+                    MessageBox.error("No se ha encontrado la incidencia seleccionada.");
+                    return false;
+                }
+
+                const keyCandidates = [key];
+                if (!key.includes("=")) {
+                    keyCandidates.push("ID=" + key);
+                }
+
+                const urls = [];
+                keyCandidates.forEach(function (keyExpression) {
+                    urls.push(`/odata/v4/incidencias/Incidencias(${keyExpression})/${actionName}`);
+                    urls.push(`/odata/v4/incidencias/Incidencias(${keyExpression})/IncidenciasService.${actionName}`);
+                    urls.push(`/odata/v4/incidencias/Incidencias(${keyExpression})/${actionName}(...)`);
+                    urls.push(`/odata/v4/incidencias/Incidencias(${keyExpression})/IncidenciasService.${actionName}(...)`);
+                });
+
+                let lastErrorText = "";
+                for (const url of urls) {
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json"
+                            },
+                            body: JSON.stringify(payload || {})
+                        });
+
+                        if (response.ok) {
+                            MessageToast.show("Acción realizada correctamente.");
+                            setTimeout(function () { window.location.reload(); }, 500);
+                            return true;
+                        }
+
+                        lastErrorText = await response.text();
+                    } catch (e) {
+                        lastErrorText = e && e.message ? e.message : String(e);
+                    }
+                }
+
+                MessageBox.error("No se ha podido ejecutar la acción. Revisa la consola del servidor.\n\n" + lastErrorText);
+                return false;
+            }
+
+            function openManualResponseDialog() {
+                loadSapDialog(function (Dialog, Button, TextArea, VBox, Label, MessageBox, MessageToast) {
+                    const textArea = new TextArea({
+                        width: "100%",
+                        rows: 7,
+                        growing: true,
+                        growingMaxLines: 12,
+                        placeholder: "Escribe aquí la respuesta que recibirá el empleado..."
+                    });
+
+                    const dialog = new Dialog({
+                        title: "Responder manualmente",
+                        contentWidth: "42rem",
+                        draggable: true,
+                        resizable: true,
+                        content: new VBox({
+                            width: "100%",
+                            items: [
+                                new Label({ text: "Respuesta para el empleado", design: "Bold" }),
+                                textArea
+                            ]
+                        }).addStyleClass("sapUiSmallMargin"),
+                        beginButton: new Button({
+                            text: "Enviar respuesta",
+                            type: "Emphasized",
+                            press: async function () {
+                                const respuesta = textArea.getValue().trim();
+                                if (!respuesta) {
+                                    MessageBox.warning("Debes escribir una respuesta antes de enviarla.");
+                                    return;
+                                }
+                                const ok = await postAction("responderManualmente", { respuesta: respuesta }, MessageToast, MessageBox);
+                                if (ok) {
+                                    dialog.close();
+                                }
+                            }
+                        }),
+                        endButton: new Button({
+                            text: "Cancelar",
+                            press: function () { dialog.close(); }
+                        }),
+                        afterClose: function () { dialog.destroy(); }
+                    });
+
+                    dialog.open();
+                });
+            }
+
+            function answerWithAI() {
+                loadSapDialog(function (Dialog, Button, TextArea, VBox, Label, MessageBox, MessageToast) {
+                    MessageBox.confirm("Se enviará al empleado la recomendación generada por la IA. ¿Quieres continuar?", {
+                        title: "Responder con IA",
+                        actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                        emphasizedAction: MessageBox.Action.OK,
+                        onClose: function (action) {
+                            if (action === MessageBox.Action.OK) {
+                                postAction("responderConIA", {}, MessageToast, MessageBox);
+                            }
+                        }
+                    });
+                });
+            }
+
+            document.addEventListener("click", function (event) {
+                if (!isObjectPage() || isEmployee()) {
+                    return;
+                }
+
+                const actionElement = closestActionElement(event.target);
+                const text = elementText(actionElement) || elementText(event.target);
+
+                if (isActionText(text, "Responder manualmente")) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (event.stopImmediatePropagation) { event.stopImmediatePropagation(); }
+                    openManualResponseDialog();
+                    return false;
+                }
+
+                if (isActionText(text, "Responder con IA")) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (event.stopImmediatePropagation) { event.stopImmediatePropagation(); }
+                    answerWithAI();
+                    return false;
+                }
+            }, true);
+
+            window.addEventListener("hashchange", function () {
+                setTimeout(applyRoleRules, 350);
+                setTimeout(applyRoleRules, 1200);
+            });
+
+            const observer = new MutationObserver(function () {
+                applyRoleRules();
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+            setTimeout(applyRoleRules, 500);
+            setTimeout(applyRoleRules, 1500);
+            setInterval(applyRoleRules, 2500);
+        }());
+    </script>
 </body>
-<a href="/" style="position:fixed; bottom:24px; left:24px; background:#0a6ed1; color:white; padding:10px 18px; border-radius:6px; font-size:13px; text-decoration:none; font-family:Arial,sans-serif; z-index:9999; box-shadow:0 2px 8px rgba(0,0,0,0.2);">← Inicio</a>
 </html>

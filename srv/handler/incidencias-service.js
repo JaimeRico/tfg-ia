@@ -65,8 +65,9 @@ Ticket: {"subject": "Servidor caído en producción", "body": "El servicio de AW
 Respuesta: {
   "priority": "high", "type": "Incident", "queue": "Technical Support",
   "department": "IT Support", "category": "Technical",
-  "reason": "Caída del sistema en producción con impacto generalizado.",
-  "recommendation": "Escalar inmediatamente al equipo de IT.",
+  "reason": "La incidencia se clasifica como soporte técnico porque describe una caída del servidor en producción con impacto sobre el servicio.",
+  "recommendation": "Validar el alcance de la caída, revisar logs del servicio afectado y escalar al equipo de infraestructura si el servicio no se recupera inmediatamente.",
+  "response_suggestion": "Hola, hemos recibido tu incidencia sobre la caída del servidor en producción. El equipo técnico está revisando el alcance del problema y te informaremos cuando el servicio esté estabilizado.",
   "needs_review": false
 }
 
@@ -74,8 +75,9 @@ Ticket: {"subject": "No he recibido mi nómina de marzo", "body": "Quiero saber 
 Respuesta: {
   "priority": "medium", "type": "Request", "queue": "Human Resources",
   "department": "Payroll", "category": "Functional",
-  "reason": "Incidencia relacionada con proceso de nóminas.",
-  "recommendation": "Revisar el estado del pago con el departamento de nóminas.",
+  "reason": "La incidencia se clasifica como nóminas porque el usuario consulta un problema relacionado con el abono de su salario.",
+  "recommendation": "Comprobar el estado del pago en el sistema de nóminas y revisar si existe alguna incidencia administrativa asociada al empleado.",
+  "response_suggestion": "Hola, hemos recibido tu consulta sobre la nómina de marzo. Vamos a revisar el estado del pago con el departamento de nóminas y te informaremos cuando tengamos una actualización.",
   "needs_review": false
 }`
     }
@@ -86,7 +88,7 @@ ${examples.map(e => `Ticket: {"subject": "${(e.subject || '').replace(/"/g, '\\"
 Respuesta: {
   "priority": "${e.priority || ''}", "type": "${e.type || ''}",
   "queue": "${e.queue || ''}", "department": "${e.department || ''}",
-  "category": "${e.category || ''}", "reason": "", "recommendation": "", "needs_review": false
+  "category": "${e.category || ''}", "reason": "", "recommendation": "", "response_suggestion": "", "needs_review": false
 }`).join('\n\n')}`
 }
 
@@ -169,8 +171,9 @@ Tu objetivo es:
 4. Determinar el departamento responsable.
 5. Clasificar si la incidencia es funcional o técnica.
 6. Explicar brevemente el motivo de la clasificación.
-7. Proponer una recomendación inicial.
-8. Indicar si necesita revisión humana.
+7. Proponer una recomendación interna concreta para RRHH o el departamento responsable.
+8. Redactar una respuesta sugerida, clara y profesional, que RRHH pueda enviar al empleado.
+9. Indicar si necesita revisión humana.
 
 ${examplesText}
 
@@ -180,12 +183,17 @@ Valores permitidos:
 - queue: Technical Support, Customer Service, IT Support, Product Support, Billing and Payments, Service Outages and Maintenance, General Inquiry, Returns and Exchanges, Sales and Pre-Sales, Human Resources
 - department: Payroll, Human Resources, IT Support, Finance, Sales, Customer Care, General Administration
 - category: Functional, Technical
+- reason: texto breve explicando por qué se clasifica así. Debe servir para justificar la clasificación internamente.
+- recommendation: texto con pasos concretos para el equipo responsable. No debe ser genérico.
+- response_suggestion: texto redactado para enviar al empleado. Debe ser amable, claro y orientado a la solución.
 - needs_review: true, false
 
 Reglas:
 - Usa "Functional" cuando el problema pertenezca al proceso de negocio.
 - Usa "Technical" cuando se trate de accesos, roles, errores del sistema, caídas o permisos.
 - Si el caso es ambiguo, marca "needs_review": true.
+- La recommendation debe indicar una acción concreta: revisar permisos, comprobar configuración, escalar al equipo técnico, validar nómina, etc.
+- La response_suggestion debe estar redactada como respuesta final para el empleado, sin mencionar detalles internos innecesarios.
 - Responde solo con JSON válido.
 
 Ticket a clasificar:
@@ -195,7 +203,7 @@ Respuesta:`
 
     const message = await client.messages.create({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 400,
+        max_tokens: 700,
         messages: [{ role: 'user', content: prompt }]
     })
 
@@ -216,6 +224,7 @@ Respuesta:`
     req.data.category          = respuesta.category
     req.data.ai_reason         = respuesta.reason
     req.data.ai_recommendation = respuesta.recommendation
+    req.data.ai_response_suggestion = respuesta.response_suggestion || respuesta.employee_response || respuesta.answer || respuesta.recommendation
     req.data.needs_review      = respuesta.needs_review
     req.data.ai_suggested      = true
 }

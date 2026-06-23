@@ -23,7 +23,8 @@ sap.ui.define([
             const oPayload = {
                 subject: sSubject,
                 body: sBody,
-                language: sLanguage
+                language: sLanguage,
+                status: "nuevo"
             };
 
             try {
@@ -45,14 +46,22 @@ sap.ui.define([
                 oView.byId("subjectInput").setValue("");
                 oView.byId("bodyInput").setValue("");
                 oView.byId("languageInput").setValue("es");
+
+                setTimeout(function () {
+                    window.location.href = "/greetinui/index.html?role=empleado&sap-ui-xx-viewCache=false";
+                }, 900);
             } catch (oError) {
                 console.error("Error creando incidencia:", oError);
-                MessageBox.error("Error al crear la incidencia.");
+                MessageBox.error("Error al crear la incidencia. Revisa la API key de Anthropic o activa un modo demo sin IA.");
             }
         },
 
+        onGoToMyIncidents: function () {
+            window.location.href = "/greetinui/index.html?role=empleado&sap-ui-xx-viewCache=false";
+        },
+
         onGoToRRHH: function () {
-            window.location.href = "/greetingui/index.html";
+            window.location.href = "/greetinui/index.html?role=rrhh&sap-ui-xx-viewCache=false";
         }
     });
 });

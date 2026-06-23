@@ -1,16 +1,17 @@
 sap.ui.define([
-    "sap/ui/core/UIComponent",
-    "sap/m/App"
-], function (UIComponent, App) {
+    "sap/ui/core/UIComponent"
+], function (UIComponent) {
     "use strict";
+
     return UIComponent.extend("dashboard.Component", {
-        metadata: { manifest: "json" },
+        metadata: {
+            manifest: "json",
+            interfaces: ["sap.ui.core.IAsyncContentCreation"]
+        },
+
         init: function () {
             UIComponent.prototype.init.apply(this, arguments);
             this.getRouter().initialize();
-        },
-        createContent: function () {
-            return new App({ id: "app" });
         }
     });
 });

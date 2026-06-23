@@ -4,7 +4,9 @@
     "id": "dashboard",
     "type": "application",
     "i18n": "i18n/i18n.properties",
-    "applicationVersion": { "version": "0.0.1" },
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
     "title": "Dashboard Incidencias",
     "description": "Dashboard de incidencias",
     "dataSources": {
@@ -19,7 +21,11 @@
   },
   "sap.ui": {
     "technology": "UI5",
-    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
   },
   "sap.ui5": {
     "flexEnabled": false,
@@ -32,11 +38,16 @@
         "sap.ui.layout": {}
       }
     },
-    "contentDensities": { "compact": true, "cozy": true },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
     "models": {
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
-        "settings": { "bundleName": "dashboard.i18n.i18n" }
+        "settings": {
+          "bundleName": "dashboard.i18n.i18n"
+        }
       },
       "mainModel": {
         "dataSource": "mainService",
@@ -56,14 +67,30 @@
         "viewType": "XML",
         "viewPath": "dashboard.view",
         "controlId": "app",
-        "controlAggregation": "pages"
+        "controlAggregation": "pages",
+        "transition": "slide",
+        "type": "View",
+        "async": true
       },
       "routes": [
-        { "pattern": "", "name": "main", "target": "main" }
+        {
+          "pattern": "",
+          "name": "main",
+          "target": "main"
+        }
       ],
       "targets": {
-        "main": { "viewName": "Main" }
+        "main": {
+          "id": "Main",
+          "name": "Main"
+        }
       }
+    },
+    "rootView": {
+      "viewName": "dashboard.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
     }
   }
 }
